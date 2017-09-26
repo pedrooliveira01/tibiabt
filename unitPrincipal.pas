@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.StdCtrls, Vcl.ExtCtrls,
   unitThread, Vcl.Buttons, unitThreadExec, Vcl.Menus, Inifiles,bib.reader.mem,
-  System.Generics.Collections;
+  System.Generics.Collections, System.ImageList, Vcl.ImgList, Vcl.AppEvnts;
 
 type
   TForm1 = class(TForm)
@@ -67,6 +67,12 @@ type
     Button5: TButton;
     Button6: TButton;
     cbbSaves: TComboBox;
+    TrayIcon: TTrayIcon;
+    Img: TImageList;
+    ApplicationEvents: TApplicationEvents;
+    popTray: TPopupMenu;
+    Open1: TMenuItem;
+    Hide1: TMenuItem;
     procedure btnStartClick(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -80,6 +86,10 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure Button6Click(Sender: TObject);
     procedure FormActivate(Sender: TObject);
+    procedure ApplicationEventsMinimize(Sender: TObject);
+    procedure TrayIconDblClick(Sender: TObject);
+    procedure Open1Click(Sender: TObject);
+    procedure Hide1Click(Sender: TObject);
   private
     { Private declarations }
    aHandlerList : TList<HWND>;
@@ -109,7 +119,7 @@ implementation
 
 { TForm1 }
 
-uses bib.vars, System.IOUtils, System.StrUtils, Winapi.TlHelp32, unitProccess;
+uses bib.vars, System.IOUtils, System.StrUtils, Winapi.TlHelp32;
 
 procedure TForm1.Apagar1Click(Sender: TObject);
 var aIndex:Integer;
@@ -118,6 +128,11 @@ begin
   listAcoes.DeleteSelected;
   aThreadExec.DeleteAcao(aIndex);
 
+end;
+
+procedure TForm1.ApplicationEventsMinimize(Sender: TObject);
+begin
+  Hide;
 end;
 
 procedure TForm1.btnStartClick(Sender: TObject);
@@ -177,17 +192,32 @@ begin
 end;
 
 procedure TForm1.Button5Click(Sender: TObject);
-var aPID:Integer;
 begin
-  aPID := StrToInt(SoNumero(copy(CbbHandler.Text,pos('#',CbbHandler.text),length(CbbHandler.text))));
+  if not Assigned(aThread) then
+  Begin
+    aThread := TTibiaAddress.Create(aHandlerList[CbbHandler.ItemIndex]);
+    aThread.FreeOnTerminate := True;
+    aThread.Start;
+  End
+  else
+  Begin
+    aThread.Pausar   := True;
+    aThread.FHandler := aHandlerList[CbbHandler.ItemIndex];
+    aThread.Pausar   := False;
+  End;
 
-  aThread := TTibiaAddress.Create(aHandlerList[CbbHandler.ItemIndex]);
-  aThread.FreeOnTerminate := True;
-  aThread.Start;
-
-  aThreadExec := TTibiaExec.Create(aHandlerList[CbbHandler.ItemIndex]);
-  aThreadExec.FreeOnTerminate := True;
-  aThreadExec.Start;
+  if not Assigned(aThreadExec) then
+  Begin
+    aThreadExec := TTibiaExec.Create(aHandlerList[CbbHandler.ItemIndex]);
+    aThreadExec.FreeOnTerminate := True;
+    aThreadExec.Start;
+  End
+  else
+  begin
+    aThreadExec.Pausar   := True;
+    aThreadExec.FHandler := aHandlerList[CbbHandler.ItemIndex];
+    aThreadExec.Pausar   := False;
+  end;
 
   aThread.Pausar := False;
 
@@ -373,6 +403,11 @@ Begin
   end;
 end;
 
+procedure TForm1.Hide1Click(Sender: TObject);
+begin
+  ShowWindow(aHandlerList[CbbHandler.ItemIndex],SW_HIDE);
+end;
+
 function TForm1.LeIni(_chave, _campoini, aDefault , aArq: String): String;
 var  _INI: TIniFile;
 Begin
@@ -408,11 +443,17 @@ begin
             +'][POR:'+aPor
             +'][Tipo:'+IfThen(Value.VerificaTIPO=vtPerc,'%','Valor')
             +'][Sinal:'+IfThen(Value.VerificaSinal=vsMenor,'<=','>=')
-            +'][Verificador:'+value.Verificador.ToString
+            +'][Ver.:'+value.Verificador.ToString
             +'][Hotkey:'+value.Hotkey.ToString
+            +'][Exaus.:'+value.Exausted.ToString
            + ']';
      listAcoes.Items.Add(aStr);
   End;
+end;
+
+procedure TForm1.Open1Click(Sender: TObject);
+begin
+  ShowWindow(aHandlerList[CbbHandler.ItemIndex],SW_RESTORE);
 end;
 
 procedure TForm1.salvar_bot(aArq:String);
@@ -445,7 +486,7 @@ begin
      gravaini('ACAO'+inttostr(i),'TIPO'       , inttostr(Integer(value.VerificaTIPO)) ,aArq);
      gravaini('ACAO'+inttostr(i),'SINAL'      , inttostr(Integer(value.VerificaSinal)) ,aArq);
      gravaini('ACAO'+inttostr(i),'VERIFICADO' , inttostr(value.Verificador),aArq);
-     gravaini('ACAO'+inttostr(i),'Exausted'   , inttostr(value.Verificador),aArq);
+     gravaini('ACAO'+inttostr(i),'Exausted'   , inttostr(value.Exausted),aArq);
      inc(i);
   End;
 end;
@@ -512,6 +553,12 @@ begin
   pintaPanelStatus(pUnderwater,aThread.PlayerStatus.Underwater);
 
 
+end;
+
+procedure TForm1.TrayIconDblClick(Sender: TObject);
+begin
+  Show;
+  BringToFront;
 end;
 
 end.

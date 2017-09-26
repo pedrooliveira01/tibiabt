@@ -8,11 +8,11 @@ uses
 
 type
   TTibiaAddress = class(TThread)
+  FHandler : HWND;
   private
     FTerminar: Boolean;
     FPlayerAddress: TDictionary<String,TAddress>;
     FPID : DWORD;
-    FHandler : HWND;
     FPlayer: TPlayer;
     FPlayerStatus : TPlayerStatus;
     FPausar: Boolean;

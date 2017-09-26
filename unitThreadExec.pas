@@ -9,11 +9,11 @@ uses
 type
   TTibiaExec = class(TThread)
     FPlayerConfig : TPlayerConfig;
+    FHandler : HWND;
   private
     FACOES: TList<TACOES>;
     FTerminar: Boolean;
     FPausar : Boolean;
-    FHandler : HWND;
 { Private declarations }
   protected
     procedure Execute; override;
