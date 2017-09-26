@@ -1,2 +1,2 @@
 # tibiabt
-bot tibia
+bot tibia.
