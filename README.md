@@ -1,6 +1,5 @@
 # tibiabt
-*Note: Este projeto não é um cavebot e sim somente um uma interação via mensagem com o cliente
-utilizando as hotkey cadastrada no jogo
+*Note: Este projeto não é um cavebot e sim somente um uma interação via mensagem com o cliente utilizando as hotkey cadastrada no jogo*
 
 ## Requisitos
 * Delphi Berlin +
