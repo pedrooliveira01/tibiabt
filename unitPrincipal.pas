@@ -73,6 +73,10 @@ type
     popTray: TPopupMenu;
     Open1: TMenuItem;
     Hide1: TMenuItem;
+    N1: TMenuItem;
+    Close1: TMenuItem;
+    N2: TMenuItem;
+    Nome1: TMenuItem;
     procedure btnStartClick(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -90,6 +94,7 @@ type
     procedure TrayIconDblClick(Sender: TObject);
     procedure Open1Click(Sender: TObject);
     procedure Hide1Click(Sender: TObject);
+    procedure Close1Click(Sender: TObject);
   private
     { Private declarations }
    aHandlerList : TList<HWND>;
@@ -104,6 +109,8 @@ type
    function LeIni(_chave, _campoini: String; aDefault: String = ''; aArq: String = ''): String;
    procedure carrega_processos;
    function SoNumero(aValue: String): String;
+   procedure Restaurar_Aplicacao;
+   Function GetEXEName(hWindow: HWND): String;
 
   public
     { Public declarations }
@@ -223,7 +230,7 @@ begin
 
   gbConfiguracoes.Visible := True;
   pFundo.Visible := True;
-
+//  Caption := GetEXEName(aHandlerList[CbbHandler.ItemIndex]);
 end;
 
 procedure TForm1.Button6Click(Sender: TObject);
@@ -349,6 +356,11 @@ begin
   configurar;
 end;
 
+procedure TForm1.Close1Click(Sender: TObject);
+begin
+  Close;
+end;
+
 procedure TForm1.configurar;
 begin
   aThreadExec.FPlayerConfig.AutoCure           := chkAutoCure.Checked;
@@ -384,6 +396,12 @@ begin
   aReader.free;
 end;
 
+function TForm1.GetEXEName(hWindow: HWND): String;
+begin
+  result := 'teste'; //setlength(result,GetWindowTextLength(hWindow));
+  setWindowText(hWindow,PChar(result));
+end;
+
 procedure TForm1.gravaini(_chave, _campoini, _valor, aArq: String);
 
 var
@@ -405,7 +423,16 @@ end;
 
 procedure TForm1.Hide1Click(Sender: TObject);
 begin
-  ShowWindow(aHandlerList[CbbHandler.ItemIndex],SW_HIDE);
+  if Hide1.Caption = '&Hide Client' then
+  begin
+    ShowWindow(aHandlerList[CbbHandler.ItemIndex],SW_HIDE);
+    Hide1.Caption := '&Show Client';
+  end
+  else if Hide1.Caption = '&Show Client' then
+  begin
+    ShowWindow(aHandlerList[CbbHandler.ItemIndex],SW_RESTORE);
+    Hide1.Caption := '&Hide Client';
+  end;
 end;
 
 function TForm1.LeIni(_chave, _campoini, aDefault , aArq: String): String;
@@ -453,7 +480,31 @@ end;
 
 procedure TForm1.Open1Click(Sender: TObject);
 begin
-  ShowWindow(aHandlerList[CbbHandler.ItemIndex],SW_RESTORE);
+  Restaurar_Aplicacao;
+end;
+
+procedure TForm1.Restaurar_Aplicacao;
+var
+  hApp: Integer;
+begin
+  try
+    hApp := FindWindow('TApplication', 'TibiaBT');
+
+    if not Application.MainForm.Showing then
+       Application.MainForm.Show;
+
+    if IsIconic(Application.Handle) then
+      { Minimizado }
+       SendMessage(hApp, WM_SYSCOMMAND, SC_RESTORE, 0)
+    else
+      { Não minimizado }
+      SetForegroundWindow(hApp);
+
+    Application.MainForm.WindowState := wsNormal;
+    Application.MainForm.BringToFront;
+  except
+
+  end;
 end;
 
 procedure TForm1.salvar_bot(aArq:String);
@@ -557,8 +608,7 @@ end;
 
 procedure TForm1.TrayIconDblClick(Sender: TObject);
 begin
-  Show;
-  BringToFront;
+  Restaurar_Aplicacao;
 end;
 
 end.

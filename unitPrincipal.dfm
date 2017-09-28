@@ -8140,7 +8140,7 @@ object Form1: TForm1
     Left = 512
     Top = 280
     Bitmap = {
-      494C0101010008001C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010101000800240010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       00000000000000000000000000000000000000000000000000050D0C0BE14240
       3EF34D4D4CF34F4F4FF34C4C4BF33D3B38F30101019E00000000000000000000
@@ -8287,13 +8287,26 @@ object Form1: TForm1
   object popTray: TPopupMenu
     Left = 465
     Top = 122
+    object Nome1: TMenuItem
+      Caption = 'Nome'
+    end
+    object N2: TMenuItem
+      Caption = '-'
+    end
+    object Hide1: TMenuItem
+      Caption = 'Hide Client'
+      OnClick = Hide1Click
+    end
+    object N1: TMenuItem
+      Caption = '-'
+    end
     object Open1: TMenuItem
       Caption = 'Open'
       OnClick = Open1Click
     end
-    object Hide1: TMenuItem
-      Caption = 'Hide'
-      OnClick = Hide1Click
+    object Close1: TMenuItem
+      Caption = 'Close'
+      OnClick = Close1Click
     end
   end
 end
