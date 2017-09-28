@@ -110,7 +110,7 @@ type
    procedure carrega_processos;
    function SoNumero(aValue: String): String;
    procedure Restaurar_Aplicacao;
-   Function GetEXEName(hWindow: HWND): String;
+   Procedure SetNameTibia(hWindow: HWND;aNome:String);
 
   public
     { Public declarations }
@@ -230,7 +230,8 @@ begin
 
   gbConfiguracoes.Visible := True;
   pFundo.Visible := True;
-//  Caption := GetEXEName(aHandlerList[CbbHandler.ItemIndex]);
+
+  SetNameTibia(aHandlerList[CbbHandler.ItemIndex],InputBox('Digite um nome para ident','','Tibia'));
 end;
 
 procedure TForm1.Button6Click(Sender: TObject);
@@ -389,17 +390,12 @@ begin
   aSistema.PATH := IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0)));
   aReader       := TReaderMem.Create;
   TelaCarregada := False;
+  Nome1.Caption := Caption;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
   aReader.free;
-end;
-
-function TForm1.GetEXEName(hWindow: HWND): String;
-begin
-  result := 'teste'; //setlength(result,GetWindowTextLength(hWindow));
-  setWindowText(hWindow,PChar(result));
 end;
 
 procedure TForm1.gravaini(_chave, _campoini, _valor, aArq: String);
@@ -540,6 +536,14 @@ begin
      gravaini('ACAO'+inttostr(i),'Exausted'   , inttostr(value.Exausted),aArq);
      inc(i);
   End;
+end;
+
+procedure TForm1.SetNameTibia(hWindow: HWND; aNome: String);
+begin
+  setWindowText(hWindow,PChar(aNome));
+  Caption       := 'TibiaBT - '+aNome;
+  Nome1.Caption := Caption;
+  TrayIcon.Hint := Caption;
 end;
 
 function TForm1.SoNumero(aValue: String): String;
