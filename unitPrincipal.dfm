@@ -1,9 +1,9 @@
-object Form1: TForm1
+object TibiaBTClient: TTibiaBTClient
   Left = 0
   Top = 0
-  Caption = 'TibiaBT'
-  ClientHeight = 468
-  ClientWidth = 764
+  Caption = 'TibiaBTClient'
+  ClientHeight = 424
+  ClientWidth = 805
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -7410,6 +7410,7 @@ object Form1: TForm1
     0000000000000000000080000000F8000000F8000000F8000000F8000000F800
     0000}
   OldCreateOrder = False
+  Position = poScreenCenter
   OnActivate = FormActivate
   OnCreate = FormCreate
   OnDestroy = FormDestroy
@@ -7417,8 +7418,8 @@ object Form1: TForm1
   TextHeight = 14
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 449
-    Width = 764
+    Top = 405
+    Width = 805
     Height = 19
     Panels = <
       item
@@ -7426,467 +7427,365 @@ object Form1: TForm1
         Width = 300
       end
       item
-        Text = '1.0.0.3'
+        Text = '1.0.0.4'
         Width = 50
       end>
+    ExplicitLeft = 8
+    ExplicitTop = 525
+    ExplicitWidth = 821
   end
   object pFundo: TPanel
     Left = 0
-    Top = 41
-    Width = 764
-    Height = 369
+    Top = 49
+    Width = 805
+    Height = 356
     Align = alBottom
+    Enabled = False
     TabOrder = 1
-    Visible = False
+    ExplicitTop = 168
+    ExplicitWidth = 821
     object gbPersonagens: TGroupBox
-      Left = 610
-      Top = 1
-      Width = 153
-      Height = 367
-      Align = alRight
-      Caption = 'Personagem'
-      TabOrder = 0
-      object pMana: TPanel
-        Left = 2
-        Top = 35
-        Width = 149
-        Height = 19
-        Align = alTop
-        Alignment = taLeftJustify
-        BevelOuter = bvNone
-        Caption = 'Vida: 0/0'
-        Color = clRed
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = [fsBold]
-        ParentBackground = False
-        ParentFont = False
-        TabOrder = 0
-      end
-      object pLevel: TPanel
-        Left = 2
-        Top = 54
-        Width = 149
-        Height = 19
-        Align = alTop
-        Alignment = taLeftJustify
-        BevelOuter = bvNone
-        Caption = 'Level: 0'
-        Color = clMoneyGreen
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = [fsBold]
-        ParentBackground = False
-        ParentFont = False
-        TabOrder = 1
-      end
-      object pHealth: TPanel
-        Left = 2
-        Top = 16
-        Width = 149
-        Height = 19
-        Align = alTop
-        Alignment = taLeftJustify
-        BevelOuter = bvNone
-        Caption = 'Mana: 0/0'
-        Color = clAqua
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = [fsBold]
-        ParentBackground = False
-        ParentFont = False
-        TabOrder = 2
-      end
-      object btnStart: TButton
-        Left = 3
-        Top = 337
-        Width = 75
-        Height = 25
-        Caption = 'Start'
-        TabOrder = 3
-        OnClick = btnStartClick
-      end
-      object pUnderwater: TPanel
-        Left = 2
-        Top = 225
-        Width = 149
-        Height = 19
-        Align = alTop
-        Alignment = taLeftJustify
-        BevelOuter = bvNone
-        Caption = 'Underwater'
-        Color = clMaroon
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWhite
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = [fsBold]
-        ParentBackground = False
-        ParentFont = False
-        TabOrder = 4
-      end
-      object pBattle: TPanel
-        Left = 2
-        Top = 206
-        Width = 149
-        Height = 19
-        Align = alTop
-        Alignment = taLeftJustify
-        BevelOuter = bvNone
-        Caption = 'Battle'
-        Color = clMaroon
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWhite
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = [fsBold]
-        ParentBackground = False
-        ParentFont = False
-        TabOrder = 5
-      end
-      object pHast: TPanel
-        Left = 2
-        Top = 187
-        Width = 149
-        Height = 19
-        Align = alTop
-        Alignment = taLeftJustify
-        BevelOuter = bvNone
-        Caption = 'Hast'
-        Color = clMaroon
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWhite
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = [fsBold]
-        ParentBackground = False
-        ParentFont = False
-        TabOrder = 6
-      end
-      object pParalize: TPanel
-        Left = 2
-        Top = 168
-        Width = 149
-        Height = 19
-        Align = alTop
-        Alignment = taLeftJustify
-        BevelOuter = bvNone
-        Caption = 'Paralize'
-        Color = clMaroon
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWhite
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = [fsBold]
-        ParentBackground = False
-        ParentFont = False
-        TabOrder = 7
-      end
-      object pManaShield: TPanel
-        Left = 2
-        Top = 149
-        Width = 149
-        Height = 19
-        Align = alTop
-        Alignment = taLeftJustify
-        BevelOuter = bvNone
-        Caption = 'Manashield'
-        Color = clMaroon
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWhite
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = [fsBold]
-        ParentBackground = False
-        ParentFont = False
-        TabOrder = 8
-      end
-      object pDrunk: TPanel
-        Left = 2
-        Top = 130
-        Width = 149
-        Height = 19
-        Align = alTop
-        Alignment = taLeftJustify
-        BevelOuter = bvNone
-        Caption = 'Drunk'
-        Color = clMaroon
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWhite
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = [fsBold]
-        ParentBackground = False
-        ParentFont = False
-        TabOrder = 9
-      end
-      object pEnergy: TPanel
-        Left = 2
-        Top = 111
-        Width = 149
-        Height = 19
-        Align = alTop
-        Alignment = taLeftJustify
-        BevelOuter = bvNone
-        Caption = 'Energy'
-        Color = clMaroon
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWhite
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = [fsBold]
-        ParentBackground = False
-        ParentFont = False
-        TabOrder = 10
-      end
-      object pFire: TPanel
-        Left = 2
-        Top = 92
-        Width = 149
-        Height = 19
-        Align = alTop
-        Alignment = taLeftJustify
-        BevelOuter = bvNone
-        Caption = 'Fire'
-        Color = clMaroon
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWhite
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = [fsBold]
-        ParentBackground = False
-        ParentFont = False
-        TabOrder = 11
-      end
-      object pPoison: TPanel
-        Left = 2
-        Top = 73
-        Width = 149
-        Height = 19
-        Align = alTop
-        Alignment = taLeftJustify
-        BevelOuter = bvNone
-        Caption = 'Poison'
-        Color = clMaroon
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWhite
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = [fsBold]
-        ParentBackground = False
-        ParentFont = False
-        TabOrder = 12
-      end
-    end
-    object gbAddAcoes: TGroupBox
       Left = 1
       Top = 1
-      Width = 144
-      Height = 367
-      Align = alLeft
-      Caption = 'Adicionar acoes'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Arial'
-      Font.Style = [fsBold]
-      ParentFont = False
-      TabOrder = 1
-      object Label1: TLabel
-        Left = 7
-        Top = 15
-        Width = 76
-        Height = 14
-        Caption = 'Nome da acao'
-      end
-      object Label2: TLabel
-        Left = 7
-        Top = 58
-        Width = 38
-        Height = 14
-        Caption = 'Hotkey'
-      end
-      object Label3: TLabel
-        Left = 7
-        Top = 118
-        Width = 66
-        Height = 14
-        Caption = 'Verifica POR'
-      end
-      object Label4: TLabel
-        Left = 7
-        Top = 161
-        Width = 69
-        Height = 14
-        Caption = 'Verifica TIPO'
-      end
-      object Label5: TLabel
-        Left = 7
-        Top = 247
-        Width = 60
-        Height = 14
-        Caption = 'Verificador'
-      end
-      object Label6: TLabel
-        Left = 7
-        Top = 204
-        Width = 70
-        Height = 14
-        Caption = 'Verifica Sinal'
-      end
-      object Label7: TLabel
-        Left = 7
-        Top = 287
-        Width = 50
-        Height = 14
-        Caption = 'Exausted'
-      end
-      object cbbHotkey: TComboBox
-        Left = 7
-        Top = 90
-        Width = 121
-        Height = 22
-        Style = csDropDownList
-        ItemIndex = 0
-        TabOrder = 3
-        Text = 'F1'
-        Items.Strings = (
-          'F1'
-          'F2'
-          'F3'
-          'F4'
-          'F5'
-          'F6'
-          'F7'
-          'F8'
-          'F9'
-          'F10'
-          'F11'
-          'F12')
-      end
-      object chkShift: TCheckBox
-        Left = 6
-        Top = 72
-        Width = 50
-        Height = 17
-        Caption = 'Shift'
-        TabOrder = 1
-      end
-      object edtTempo: TEdit
-        Left = 7
-        Top = 262
-        Width = 121
-        Height = 22
-        NumbersOnly = True
-        TabOrder = 7
-        Text = '0'
-      end
-      object edtNome: TEdit
-        Left = 6
-        Top = 29
-        Width = 121
-        Height = 22
-        CharCase = ecUpperCase
+      Width = 803
+      Height = 78
+      Align = alTop
+      Caption = 'Personagem'
+      TabOrder = 0
+      ExplicitLeft = -1
+      ExplicitTop = -8
+      object Panel1: TPanel
+        Left = 557
+        Top = 16
+        Width = 244
+        Height = 60
+        Align = alClient
         TabOrder = 0
+        ExplicitLeft = 320
+        ExplicitTop = 56
+        ExplicitWidth = 185
+        ExplicitHeight = 41
+        object pHealth: TPanel
+          Left = 1
+          Top = 1
+          Width = 242
+          Height = 19
+          Align = alTop
+          Alignment = taLeftJustify
+          BevelOuter = bvNone
+          Caption = 'Mana: 0/0'
+          Color = clAqua
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentBackground = False
+          ParentFont = False
+          TabOrder = 0
+          ExplicitLeft = 2
+          ExplicitTop = 16
+          ExplicitWidth = 815
+        end
+        object pLevel: TPanel
+          Left = 1
+          Top = 39
+          Width = 242
+          Height = 19
+          Align = alTop
+          Alignment = taLeftJustify
+          BevelOuter = bvNone
+          Caption = 'Level: 0'
+          Color = clMoneyGreen
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentBackground = False
+          ParentFont = False
+          TabOrder = 1
+          ExplicitLeft = 2
+          ExplicitTop = 35
+          ExplicitWidth = 815
+        end
+        object pMana: TPanel
+          Left = 1
+          Top = 20
+          Width = 242
+          Height = 19
+          Align = alTop
+          Alignment = taLeftJustify
+          BevelOuter = bvNone
+          Caption = 'Vida: 0/0'
+          Color = clRed
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentBackground = False
+          ParentFont = False
+          TabOrder = 2
+          ExplicitLeft = 2
+          ExplicitTop = 16
+          ExplicitWidth = 815
+        end
       end
-      object cbbVerificaPOR: TComboBox
-        Left = 7
-        Top = 133
-        Width = 121
-        Height = 22
-        Style = csDropDownList
-        ItemIndex = 0
-        TabOrder = 4
-        Text = 'MANA'
-        Items.Strings = (
-          'MANA'
-          'HP'
-          'TEMPO')
+      object Panel4: TPanel
+        Left = 187
+        Top = 16
+        Width = 185
+        Height = 60
+        Align = alLeft
+        TabOrder = 1
+        ExplicitLeft = 517
+        ExplicitTop = 32
+        ExplicitHeight = 41
+        object pDrunk: TPanel
+          Left = 1
+          Top = 1
+          Width = 183
+          Height = 19
+          Align = alTop
+          Alignment = taLeftJustify
+          BevelOuter = bvNone
+          Caption = 'Drunk'
+          Color = clMaroon
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentBackground = False
+          ParentFont = False
+          TabOrder = 0
+          ExplicitLeft = 2
+          ExplicitTop = 9
+        end
+        object pParalize: TPanel
+          Left = 1
+          Top = 20
+          Width = 183
+          Height = 19
+          Align = alTop
+          Alignment = taLeftJustify
+          BevelOuter = bvNone
+          Caption = 'Paralize'
+          Color = clMaroon
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentBackground = False
+          ParentFont = False
+          TabOrder = 1
+          ExplicitLeft = 2
+          ExplicitTop = 22
+        end
+        object pUnderwater: TPanel
+          Left = 1
+          Top = 39
+          Width = 183
+          Height = 19
+          Align = alTop
+          Alignment = taLeftJustify
+          BevelOuter = bvNone
+          Caption = 'Underwater'
+          Color = clMaroon
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentBackground = False
+          ParentFont = False
+          TabOrder = 2
+          ExplicitTop = 22
+        end
       end
-      object cbbVerificaTIPO: TComboBox
-        Left = 7
-        Top = 176
-        Width = 121
-        Height = 22
-        Style = csDropDownList
-        ItemIndex = 0
-        TabOrder = 5
-        Text = 'PERC'
-        Items.Strings = (
-          'PERC'
-          'VALOR')
-      end
-      object Button1: TButton
-        Left = 3
-        Top = 337
-        Width = 75
-        Height = 25
-        Caption = 'Add'
-        TabOrder = 9
-        OnClick = Button1Click
-      end
-      object cbbVerificaSinal: TComboBox
-        Left = 7
-        Top = 219
-        Width = 121
-        Height = 22
-        Style = csDropDownList
-        ItemIndex = 0
-        TabOrder = 6
-        Text = 'MENOR'
-        Items.Strings = (
-          'MENOR'
-          'MAIOR')
-      end
-      object edtExausted: TEdit
-        Left = 7
-        Top = 302
-        Width = 121
-        Height = 22
-        NumbersOnly = True
-        TabOrder = 8
-        Text = '1000'
-      end
-      object chkCtrl: TCheckBox
-        Left = 77
-        Top = 72
-        Width = 50
-        Height = 17
-        Caption = 'Ctrl'
+      object Panel5: TPanel
+        Left = 2
+        Top = 16
+        Width = 185
+        Height = 60
+        Align = alLeft
         TabOrder = 2
+        ExplicitLeft = 172
+        ExplicitTop = 82
+        ExplicitHeight = 41
+        object pPoison: TPanel
+          Left = 1
+          Top = 1
+          Width = 183
+          Height = 19
+          Align = alTop
+          Alignment = taLeftJustify
+          BevelOuter = bvNone
+          Caption = 'Poison'
+          Color = clMaroon
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentBackground = False
+          ParentFont = False
+          TabOrder = 0
+          ExplicitLeft = 2
+          ExplicitTop = 9
+        end
+        object pFire: TPanel
+          Left = 1
+          Top = 20
+          Width = 183
+          Height = 19
+          Align = alTop
+          Alignment = taLeftJustify
+          BevelOuter = bvNone
+          Caption = 'Fire'
+          Color = clMaroon
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentBackground = False
+          ParentFont = False
+          TabOrder = 1
+          ExplicitLeft = 2
+          ExplicitTop = 22
+        end
+        object pEnergy: TPanel
+          Left = 1
+          Top = 39
+          Width = 183
+          Height = 19
+          Align = alTop
+          Alignment = taLeftJustify
+          BevelOuter = bvNone
+          Caption = 'Energy'
+          Color = clMaroon
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentBackground = False
+          ParentFont = False
+          TabOrder = 2
+          ExplicitTop = 22
+        end
+      end
+      object Panel6: TPanel
+        Left = 372
+        Top = 16
+        Width = 185
+        Height = 60
+        Align = alLeft
+        TabOrder = 3
+        ExplicitLeft = 416
+        ExplicitTop = 96
+        ExplicitHeight = 41
+        object pBattle: TPanel
+          Left = 1
+          Top = 1
+          Width = 183
+          Height = 19
+          Align = alTop
+          Alignment = taLeftJustify
+          BevelOuter = bvNone
+          Caption = 'Battle'
+          Color = clMaroon
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentBackground = False
+          ParentFont = False
+          TabOrder = 0
+          ExplicitLeft = 2
+          ExplicitTop = 9
+        end
+        object pHast: TPanel
+          Left = 1
+          Top = 39
+          Width = 183
+          Height = 19
+          Align = alTop
+          Alignment = taLeftJustify
+          BevelOuter = bvNone
+          Caption = 'Hast'
+          Color = clMaroon
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentBackground = False
+          ParentFont = False
+          TabOrder = 1
+          ExplicitLeft = 2
+          ExplicitTop = 22
+        end
+        object pManaShield: TPanel
+          Left = 1
+          Top = 20
+          Width = 183
+          Height = 19
+          Align = alTop
+          Alignment = taLeftJustify
+          BevelOuter = bvNone
+          Caption = 'Manashield'
+          Color = clMaroon
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentBackground = False
+          ParentFont = False
+          TabOrder = 2
+          ExplicitLeft = 2
+          ExplicitTop = 22
+        end
       end
     end
     object gbAcoes: TGroupBox
-      Left = 145
-      Top = 1
-      Width = 465
-      Height = 367
+      Left = 1
+      Top = 79
+      Width = 679
+      Height = 276
       Align = alClient
       Caption = 'Acoes'
-      TabOrder = 2
+      TabOrder = 1
+      ExplicitLeft = 145
+      ExplicitTop = 1
+      ExplicitWidth = 465
+      ExplicitHeight = 367
       object listAcoes: TListBox
         Left = 2
         Top = 57
-        Width = 461
-        Height = 308
+        Width = 675
+        Height = 147
         Align = alClient
         ItemHeight = 14
         PopupMenu = PopupMenu1
         TabOrder = 0
+        OnDblClick = listAcoesDblClick
+        ExplicitLeft = 0
+        ExplicitTop = 56
       end
       object Panel2: TPanel
         Left = 2
         Top = 16
-        Width = 461
+        Width = 675
         Height = 41
         Align = alTop
         TabOrder = 1
+        ExplicitWidth = 461
         object Button2: TButton
           Left = 197
           Top = 10
@@ -7912,168 +7811,423 @@ object Form1: TForm1
           Height = 22
           TabOrder = 2
         end
+        object btnStart: TButton
+          Left = 604
+          Top = 1
+          Width = 70
+          Height = 39
+          Align = alRight
+          Caption = 'Start'
+          TabOrder = 3
+          OnClick = btnStartClick
+          ExplicitLeft = 603
+        end
+      end
+      object gbAddAcoes: TGroupBox
+        Left = 2
+        Top = 204
+        Width = 675
+        Height = 70
+        Align = alBottom
+        Caption = 'Adicionar acoes'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+        TabOrder = 2
+        ExplicitTop = 301
+        ExplicitWidth = 698
+        object Label1: TLabel
+          Left = 7
+          Top = 26
+          Width = 76
+          Height = 14
+          Caption = 'Nome da acao'
+        end
+        object Label2: TLabel
+          Left = 107
+          Top = 16
+          Width = 38
+          Height = 14
+          Caption = 'Hotkey'
+        end
+        object Label3: TLabel
+          Left = 207
+          Top = 25
+          Width = 66
+          Height = 14
+          Caption = 'Verifica POR'
+        end
+        object Label4: TLabel
+          Left = 291
+          Top = 25
+          Width = 69
+          Height = 14
+          Caption = 'Verifica TIPO'
+        end
+        object Label5: TLabel
+          Left = 464
+          Top = 28
+          Width = 60
+          Height = 14
+          Caption = 'Verificador'
+        end
+        object Label6: TLabel
+          Left = 376
+          Top = 25
+          Width = 70
+          Height = 14
+          Caption = 'Verifica Sinal'
+        end
+        object Label7: TLabel
+          Left = 533
+          Top = 26
+          Width = 50
+          Height = 14
+          Caption = 'Exausted'
+        end
+        object cbbHotkey: TComboBox
+          Left = 161
+          Top = 40
+          Width = 41
+          Height = 22
+          Style = csDropDownList
+          ItemIndex = 0
+          TabOrder = 3
+          Text = 'F1'
+          Items.Strings = (
+            'F1'
+            'F2'
+            'F3'
+            'F4'
+            'F5'
+            'F6'
+            'F7'
+            'F8'
+            'F9'
+            'F10'
+            'F11'
+            'F12')
+        end
+        object chkShift: TCheckBox
+          Left = 107
+          Top = 32
+          Width = 50
+          Height = 17
+          Caption = 'Shift'
+          TabOrder = 1
+        end
+        object edtTempo: TEdit
+          Left = 460
+          Top = 40
+          Width = 71
+          Height = 22
+          NumbersOnly = True
+          TabOrder = 7
+          Text = '0'
+        end
+        object edtNome: TEdit
+          Left = 6
+          Top = 40
+          Width = 99
+          Height = 22
+          CharCase = ecUpperCase
+          TabOrder = 0
+        end
+        object cbbVerificaPOR: TComboBox
+          Left = 207
+          Top = 40
+          Width = 81
+          Height = 22
+          Style = csDropDownList
+          ItemIndex = 0
+          TabOrder = 4
+          Text = 'MANA'
+          Items.Strings = (
+            'MANA'
+            'HP'
+            'TEMPO')
+        end
+        object cbbVerificaTIPO: TComboBox
+          Left = 291
+          Top = 40
+          Width = 81
+          Height = 22
+          Style = csDropDownList
+          ItemIndex = 0
+          TabOrder = 5
+          Text = 'PERC'
+          Items.Strings = (
+            'PERC'
+            'VALOR')
+        end
+        object Button1: TButton
+          Left = 606
+          Top = 16
+          Width = 67
+          Height = 52
+          Align = alRight
+          Caption = 'Adicionar'
+          TabOrder = 9
+          OnClick = Button1Click
+          ExplicitTop = 14
+        end
+        object cbbVerificaSinal: TComboBox
+          Left = 376
+          Top = 40
+          Width = 81
+          Height = 22
+          Style = csDropDownList
+          ItemIndex = 0
+          TabOrder = 6
+          Text = 'MENOR'
+          Items.Strings = (
+            'MENOR'
+            'MAIOR')
+        end
+        object edtExausted: TEdit
+          Left = 533
+          Top = 41
+          Width = 71
+          Height = 22
+          NumbersOnly = True
+          TabOrder = 8
+          Text = '1000'
+        end
+        object chkCtrl: TCheckBox
+          Left = 107
+          Top = 47
+          Width = 50
+          Height = 17
+          Caption = 'Ctrl'
+          TabOrder = 2
+        end
+      end
+    end
+    object gbConfiguracoes: TGroupBox
+      Left = 680
+      Top = 79
+      Width = 124
+      Height = 276
+      Align = alRight
+      Caption = 'Configuracoes'
+      TabOrder = 2
+      ExplicitTop = 1
+      object chkAutoCure: TCheckBox
+        Left = 2
+        Top = 16
+        Width = 120
+        Height = 21
+        Align = alTop
+        Caption = 'Auto cure'
+        TabOrder = 0
+        OnClick = chkAutoCureClick
+        ExplicitLeft = 3
+        ExplicitTop = 5
+        ExplicitWidth = 113
+      end
+      object chkAutoParalize: TCheckBox
+        Left = 2
+        Top = 102
+        Width = 120
+        Height = 21
+        Align = alTop
+        Caption = 'Anti Paralize'
+        TabOrder = 1
+        OnClick = chkAutoCureClick
+        ExplicitLeft = 1
+        ExplicitTop = 100
+        ExplicitWidth = 113
+      end
+      object chkAutoHaste: TCheckBox
+        Left = 2
+        Top = 59
+        Width = 120
+        Height = 21
+        Align = alTop
+        Caption = 'Auto haste'
+        TabOrder = 2
+        OnClick = chkAutoCureClick
+        ExplicitLeft = 4
+        ExplicitTop = 57
+        ExplicitWidth = 113
+      end
+      object cbbautohaste: TComboBox
+        Left = 2
+        Top = 80
+        Width = 120
+        Height = 22
+        Align = alTop
+        Style = csDropDownList
+        ItemIndex = 0
+        TabOrder = 3
+        Text = 'F1'
+        OnChange = cbbAutoCureChange
+        Items.Strings = (
+          'F1'
+          'F2'
+          'F3'
+          'F4'
+          'F5'
+          'F6'
+          'F7'
+          'F8'
+          'F9'
+          'F10'
+          'F11'
+          'F12')
+        ExplicitTop = 57
+        ExplicitWidth = 22
+      end
+      object chkAutoManashield: TCheckBox
+        Left = 2
+        Top = 145
+        Width = 120
+        Height = 21
+        Align = alTop
+        Caption = 'Auto manashield'
+        TabOrder = 4
+        OnClick = chkAutoCureClick
+        ExplicitLeft = 6
+        ExplicitTop = 143
+        ExplicitWidth = 113
+      end
+      object cbbAutoCure: TComboBox
+        Left = 2
+        Top = 37
+        Width = 120
+        Height = 22
+        Align = alTop
+        Style = csDropDownList
+        ItemIndex = 0
+        TabOrder = 5
+        Text = 'F1'
+        OnChange = cbbAutoCureChange
+        Items.Strings = (
+          'F1'
+          'F2'
+          'F3'
+          'F4'
+          'F5'
+          'F6'
+          'F7'
+          'F8'
+          'F9'
+          'F10'
+          'F11'
+          'F12')
+        ExplicitTop = 16
+        ExplicitWidth = 22
+      end
+      object cbbAntiParalize: TComboBox
+        Left = 2
+        Top = 123
+        Width = 120
+        Height = 22
+        Align = alTop
+        Style = csDropDownList
+        ItemIndex = 0
+        TabOrder = 6
+        Text = 'F1'
+        OnChange = cbbAutoCureChange
+        Items.Strings = (
+          'F1'
+          'F2'
+          'F3'
+          'F4'
+          'F5'
+          'F6'
+          'F7'
+          'F8'
+          'F9'
+          'F10'
+          'F11'
+          'F12')
+        ExplicitTop = 105
+        ExplicitWidth = 22
+      end
+      object cbbAutoManashield: TComboBox
+        Left = 2
+        Top = 166
+        Width = 120
+        Height = 22
+        Align = alTop
+        Style = csDropDownList
+        ItemIndex = 0
+        TabOrder = 7
+        Text = 'F1'
+        OnChange = cbbAutoCureChange
+        Items.Strings = (
+          'F1'
+          'F2'
+          'F3'
+          'F4'
+          'F5'
+          'F6'
+          'F7'
+          'F8'
+          'F9'
+          'F10'
+          'F11'
+          'F12')
+        ExplicitLeft = 1
+        ExplicitTop = 133
+        ExplicitWidth = 113
+      end
+      object chkFullSoul: TCheckBox
+        Left = 2
+        Top = 188
+        Width = 120
+        Height = 21
+        Align = alTop
+        Caption = 'Full soul (250)'
+        TabOrder = 8
+        OnClick = chkAutoCureClick
+        ExplicitLeft = 4
+        ExplicitTop = 233
+      end
+      object cbbFullSoul: TComboBox
+        Left = 2
+        Top = 209
+        Width = 120
+        Height = 22
+        Align = alTop
+        Style = csDropDownList
+        ItemIndex = 0
+        TabOrder = 9
+        Text = 'F1'
+        OnChange = cbbAutoCureChange
+        Items.Strings = (
+          'F1'
+          'F2'
+          'F3'
+          'F4'
+          'F5'
+          'F6'
+          'F7'
+          'F8'
+          'F9'
+          'F10'
+          'F11'
+          'F12')
+        ExplicitLeft = 6
+        ExplicitTop = 237
       end
     end
   end
-  object gbConfiguracoes: TGroupBox
-    Left = 0
-    Top = 410
-    Width = 764
-    Height = 39
-    Align = alBottom
-    Caption = 'Configuracoes'
-    TabOrder = 2
-    Visible = False
-    object chkAutoCure: TCheckBox
-      Left = 48
-      Top = 16
-      Width = 125
-      Height = 21
-      Align = alLeft
-      Caption = 'Auto cure'
-      TabOrder = 0
-      OnClick = chkAutoCureClick
-    end
-    object chkAutoParalize: TCheckBox
-      Left = 390
-      Top = 16
-      Width = 125
-      Height = 21
-      Align = alLeft
-      Caption = 'Anti Paralize'
-      TabOrder = 1
-      OnClick = chkAutoCureClick
-    end
-    object chkAutoHaste: TCheckBox
-      Left = 219
-      Top = 16
-      Width = 125
-      Height = 21
-      Align = alLeft
-      Caption = 'Auto haste'
-      TabOrder = 2
-      OnClick = chkAutoCureClick
-    end
-    object cbbautohaste: TComboBox
-      Left = 173
-      Top = 16
-      Width = 46
-      Height = 22
-      Align = alLeft
-      Style = csDropDownList
-      ItemIndex = 0
-      TabOrder = 3
-      Text = 'F1'
-      OnChange = cbbAutoCureChange
-      Items.Strings = (
-        'F1'
-        'F2'
-        'F3'
-        'F4'
-        'F5'
-        'F6'
-        'F7'
-        'F8'
-        'F9'
-        'F10'
-        'F11'
-        'F12')
-    end
-    object chkAutoManashield: TCheckBox
-      Left = 561
-      Top = 16
-      Width = 125
-      Height = 21
-      Align = alLeft
-      Caption = 'Auto manashield'
-      TabOrder = 4
-      OnClick = chkAutoCureClick
-    end
-    object cbbAutoCure: TComboBox
-      Left = 2
-      Top = 16
-      Width = 46
-      Height = 22
-      Align = alLeft
-      Style = csDropDownList
-      ItemIndex = 0
-      TabOrder = 5
-      Text = 'F1'
-      OnChange = cbbAutoCureChange
-      Items.Strings = (
-        'F1'
-        'F2'
-        'F3'
-        'F4'
-        'F5'
-        'F6'
-        'F7'
-        'F8'
-        'F9'
-        'F10'
-        'F11'
-        'F12')
-    end
-    object cbbAntiParalize: TComboBox
-      Left = 344
-      Top = 16
-      Width = 46
-      Height = 22
-      Align = alLeft
-      Style = csDropDownList
-      ItemIndex = 0
-      TabOrder = 6
-      Text = 'F1'
-      OnChange = cbbAutoCureChange
-      Items.Strings = (
-        'F1'
-        'F2'
-        'F3'
-        'F4'
-        'F5'
-        'F6'
-        'F7'
-        'F8'
-        'F9'
-        'F10'
-        'F11'
-        'F12')
-    end
-    object cbbAutoManashield: TComboBox
-      Left = 515
-      Top = 16
-      Width = 46
-      Height = 22
-      Align = alLeft
-      Style = csDropDownList
-      ItemIndex = 0
-      TabOrder = 7
-      Text = 'F1'
-      OnChange = cbbAutoCureChange
-      Items.Strings = (
-        'F1'
-        'F2'
-        'F3'
-        'F4'
-        'F5'
-        'F6'
-        'F7'
-        'F8'
-        'F9'
-        'F10'
-        'F11'
-        'F12')
-    end
-  end
-  object Panel3: TPanel
+  object pCarregamento: TPanel
     Left = 0
     Top = 0
-    Width = 764
-    Height = 41
+    Width = 805
+    Height = 49
     Align = alClient
-    Color = clBlack
+    Color = clRed
     ParentBackground = False
-    TabOrder = 3
+    TabOrder = 2
+    ExplicitWidth = 764
+    ExplicitHeight = 41
     object Label8: TLabel
       Left = 114
       Top = 20
@@ -8115,8 +8269,8 @@ object Form1: TForm1
     end
   end
   object PopupMenu1: TPopupMenu
-    Left = 512
-    Top = 224
+    Left = 984
+    Top = 408
     object Apagar1: TMenuItem
       Caption = 'Apagar'
       OnClick = Apagar1Click
@@ -8125,22 +8279,22 @@ object Form1: TForm1
   object Timer1: TTimer
     Interval = 500
     OnTimer = Timer1Timer
-    Left = 512
-    Top = 176
+    Left = 984
+    Top = 360
   end
   object TrayIcon: TTrayIcon
     Icons = Img
     PopupMenu = popTray
     Visible = True
     OnDblClick = TrayIconDblClick
-    Left = 513
-    Top = 122
+    Left = 985
+    Top = 306
   end
   object Img: TImageList
-    Left = 512
-    Top = 280
+    Left = 984
+    Top = 464
     Bitmap = {
-      494C010101000800280010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010101000800300010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       00000000000000000000000000000000000000000000000000050D0C0BE14240
       3EF34D4D4CF34F4F4FF34C4C4BF33D3B38F30101019E00000000000000000000
@@ -8281,12 +8435,12 @@ object Form1: TForm1
   end
   object ApplicationEvents: TApplicationEvents
     OnMinimize = ApplicationEventsMinimize
-    Left = 376
-    Top = 240
+    Left = 944
+    Top = 352
   end
   object popTray: TPopupMenu
-    Left = 465
-    Top = 122
+    Left = 937
+    Top = 306
     object Nome1: TMenuItem
       Caption = 'Nome'
     end

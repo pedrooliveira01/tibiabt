@@ -6,62 +6,26 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.StdCtrls, Vcl.ExtCtrls,
   unitThread, Vcl.Buttons, unitThreadExec, Vcl.Menus, Inifiles,bib.reader.mem,
-  System.Generics.Collections, System.ImageList, Vcl.ImgList, Vcl.AppEvnts;
+  System.Generics.Collections, System.ImageList, Vcl.ImgList, Vcl.AppEvnts,
+  bib.vars;
 
 type
-  TForm1 = class(TForm)
+  TTibiaBTClient = class(TForm)
     StatusBar1: TStatusBar;
     gbPersonagens: TGroupBox;
     pMana: TPanel;
     pLevel: TPanel;
     pHealth: TPanel;
-    btnStart: TButton;
-    gbAddAcoes: TGroupBox;
     gbAcoes: TGroupBox;
-    cbbHotkey: TComboBox;
-    chkShift: TCheckBox;
-    edtTempo: TEdit;
-    edtNome: TEdit;
-    cbbVerificaPOR: TComboBox;
-    cbbVerificaTIPO: TComboBox;
-    Label1: TLabel;
-    Label2: TLabel;
-    Label3: TLabel;
-    Label4: TLabel;
-    Label5: TLabel;
-    Button1: TButton;
     listAcoes: TListBox;
-    cbbVerificaSinal: TComboBox;
-    Label6: TLabel;
     PopupMenu1: TPopupMenu;
     Apagar1: TMenuItem;
-    edtExausted: TEdit;
-    Label7: TLabel;
-    chkCtrl: TCheckBox;
-    pUnderwater: TPanel;
-    pBattle: TPanel;
-    pHast: TPanel;
-    pParalize: TPanel;
-    pManaShield: TPanel;
-    pDrunk: TPanel;
-    pEnergy: TPanel;
-    pFire: TPanel;
-    pPoison: TPanel;
     Timer1: TTimer;
     pFundo: TPanel;
     Panel2: TPanel;
-    gbConfiguracoes: TGroupBox;
-    chkAutoCure: TCheckBox;
-    chkAutoParalize: TCheckBox;
-    chkAutoHaste: TCheckBox;
-    cbbautohaste: TComboBox;
-    chkAutoManashield: TCheckBox;
-    cbbAutoCure: TComboBox;
-    cbbAntiParalize: TComboBox;
-    cbbAutoManashield: TComboBox;
     Button2: TButton;
     Button3: TButton;
-    Panel3: TPanel;
+    pCarregamento: TPanel;
     CbbHandler: TComboBox;
     Label8: TLabel;
     Button5: TButton;
@@ -77,6 +41,49 @@ type
     Close1: TMenuItem;
     N2: TMenuItem;
     Nome1: TMenuItem;
+    gbConfiguracoes: TGroupBox;
+    chkAutoCure: TCheckBox;
+    chkAutoParalize: TCheckBox;
+    chkAutoHaste: TCheckBox;
+    cbbautohaste: TComboBox;
+    chkAutoManashield: TCheckBox;
+    cbbAutoCure: TComboBox;
+    cbbAntiParalize: TComboBox;
+    cbbAutoManashield: TComboBox;
+    Panel1: TPanel;
+    Panel4: TPanel;
+    Panel5: TPanel;
+    pPoison: TPanel;
+    pFire: TPanel;
+    pEnergy: TPanel;
+    pDrunk: TPanel;
+    pParalize: TPanel;
+    pUnderwater: TPanel;
+    Panel6: TPanel;
+    pBattle: TPanel;
+    pHast: TPanel;
+    pManaShield: TPanel;
+    btnStart: TButton;
+    gbAddAcoes: TGroupBox;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
+    Label7: TLabel;
+    cbbHotkey: TComboBox;
+    chkShift: TCheckBox;
+    edtTempo: TEdit;
+    edtNome: TEdit;
+    cbbVerificaPOR: TComboBox;
+    cbbVerificaTIPO: TComboBox;
+    Button1: TButton;
+    cbbVerificaSinal: TComboBox;
+    edtExausted: TEdit;
+    chkCtrl: TCheckBox;
+    chkFullSoul: TCheckBox;
+    cbbFullSoul: TComboBox;
     procedure btnStartClick(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -95,11 +102,15 @@ type
     procedure Open1Click(Sender: TObject);
     procedure Hide1Click(Sender: TObject);
     procedure Close1Click(Sender: TObject);
+    procedure listAcoesDblClick(Sender: TObject);
   private
     { Private declarations }
    aHandlerList : TList<HWND>;
    TelaCarregada : Boolean;
+   hk1,hk2: Integer;
+   aValueEdit : TAcoes;
    function StrTohotkey(Value:String):integer;
+   function hotkeyToIndex(Value:integer):integer;
    procedure ListaAcoes;
    procedure configurar;
    procedure salvar_bot(aArq:String);
@@ -112,23 +123,28 @@ type
    procedure Restaurar_Aplicacao;
    Procedure SetNameTibia(hWindow: HWND;aNome:String);
 
+   //HotKeys
+    procedure WMHotKey(var Msg: TWMHotKey); message WM_HOTKEY;
+    procedure fecha_tudo;
+    procedure esconde_tudo;
+
   public
     { Public declarations }
 
   end;
 
 var
-  Form1: TForm1;
+  TibiaBTClient: TTibiaBTClient;
 
 implementation
 
 {$R *.dfm}
 
-{ TForm1 }
+{ TTibiaBT }
 
-uses bib.vars, System.IOUtils, System.StrUtils, Winapi.TlHelp32;
+uses System.IOUtils, System.StrUtils, Winapi.TlHelp32;
 
-procedure TForm1.Apagar1Click(Sender: TObject);
+procedure TTibiaBTClient.Apagar1Click(Sender: TObject);
 var aIndex:Integer;
 begin
   aIndex := listAcoes.ItemIndex;
@@ -137,12 +153,12 @@ begin
 
 end;
 
-procedure TForm1.ApplicationEventsMinimize(Sender: TObject);
+procedure TTibiaBTClient.ApplicationEventsMinimize(Sender: TObject);
 begin
   Hide;
 end;
 
-procedure TForm1.btnStartClick(Sender: TObject);
+procedure TTibiaBTClient.btnStartClick(Sender: TObject);
 var aStart:Boolean;
 begin
   if btnStart.Caption = 'Start' then
@@ -168,37 +184,50 @@ end;
 
 
 
-procedure TForm1.Button1Click(Sender: TObject);
+procedure TTibiaBTClient.Button1Click(Sender: TObject);
+var aID:Integer;
 begin
-  aThreadExec.AddAcao(edtNome.Text
-                     ,StrTohotkey(cbbhotkey.text)
-                     ,chkShift.Checked
-                     ,chkCtrl.Checked
-                     ,TVerificaPor(cbbVerificaPOR.ItemIndex)
-                     ,TVerificaTipo(cbbVerificaTIPO.ItemIndex)
-                     ,TVerificaSinal(cbbVerificaSinal.ItemIndex)
-                     ,strtoint(edtTempo.Text)
-                     ,strtoint(edtExausted.Text));
+  aID := -1;
+  try
+  if Assigned(aValueEdit) then
+  Begin
+    aID        := aThreadExec.ACOES.IndexOf(aValueEdit);
+  End;
 
-  edtNome.Clear;
-  edtTempo.Text := '0';
-  chkShift.Checked := False;
-  SetFocusedControl(edtNome);
+    aThreadExec.AddAcao(edtNome.Text
+                       ,StrTohotkey(cbbhotkey.text)
+                       ,chkShift.Checked
+                       ,chkCtrl.Checked
+                       ,TVerificaPor(cbbVerificaPOR.ItemIndex)
+                       ,TVerificaTipo(cbbVerificaTIPO.ItemIndex)
+                       ,TVerificaSinal(cbbVerificaSinal.ItemIndex)
+                       ,strtoint(edtTempo.Text)
+                       ,strtoint(edtExausted.Text)
+                       ,aID);  // Se tiver desabilitado é pq é uma edicao
 
-  ListaAcoes;
+    ListaAcoes;
+  finally
+    aValueEdit := nil;
+
+    edtNome.Enabled := True;
+    edtNome.Clear;
+    edtTempo.Text := '0';
+    chkShift.Checked := False;
+    SetFocusedControl(edtNome);
+  end;
 end;
 
-procedure TForm1.Button2Click(Sender: TObject);
+procedure TTibiaBTClient.Button2Click(Sender: TObject);
 begin
   carrega_bot(cbbSaves.text);
 end;
 
-procedure TForm1.Button3Click(Sender: TObject);
+procedure TTibiaBTClient.Button3Click(Sender: TObject);
 begin
   salvar_bot(cbbSaves.text);
 end;
 
-procedure TForm1.Button5Click(Sender: TObject);
+procedure TTibiaBTClient.Button5Click(Sender: TObject);
 begin
   if not Assigned(aThread) then
   Begin
@@ -228,18 +257,19 @@ begin
 
   aThread.Pausar := False;
 
-  gbConfiguracoes.Visible := True;
-  pFundo.Visible := True;
+  pFundo.Enabled := True;
+
+  pCarregamento.Color := clGreen;
 
   SetNameTibia(aHandlerList[CbbHandler.ItemIndex],InputBox('Digite um nome para ident','','Tibia'));
 end;
 
-procedure TForm1.Button6Click(Sender: TObject);
+procedure TTibiaBTClient.Button6Click(Sender: TObject);
 begin
   carrega_processos;
 end;
 
-procedure TForm1.carrega_bot(aArq:String);
+procedure TTibiaBTClient.carrega_bot(aArq:String);
 var Value:TAcoes;
      i:integer;
      aTotal:Integer;
@@ -264,12 +294,16 @@ begin
   chkAutoManashield.Checked := LeIni('CONFIG','MANASHIELD','0',aArq)='1';
   cbbAutoManashield.ItemIndex := StrToInt(LeIni('CONFIG','HTMANASHIELD','0',aArq));
 
+  chkFullSoul.Checked := LeIni('CONFIG','SOULFULL','0',aArq)='1';
+  cbbFullSoul.ItemIndex := StrToInt(LeIni('CONFIG','HTSOULFULL','0',aArq));
+
 
   aTotal :=  StrToInt(LeIni('ACAO','TOTAL' ,'0',aArq));
   i := 0;
 
   for i:=0 to aTotal-1 do
   Begin
+    Value               := TAcoes.Create;
     Value.Nome          := LeIni('ACAO'+inttostr(i),'NOME'       , i.ToString,aArq);
     Value.Hotkey        := LeIni('ACAO'+inttostr(i),'HOTKEY'     , '0',aArq).ToInteger;
     Value.Shift         := LeIni('ACAO'+inttostr(i),'SHIFT'      , '0',aArq)='1';
@@ -288,7 +322,7 @@ begin
 
 end;
 
-procedure TForm1.carrega_inis;
+procedure TTibiaBTClient.carrega_inis;
   procedure listararquivos(var aList:TStringList);
   var
     SR: TSearchRec;
@@ -318,7 +352,7 @@ begin
       cbbSaves.ItemIndex := 0;
 end;
 
-procedure TForm1.carrega_processos;
+procedure TTibiaBTClient.carrega_processos;
 var
 Handle,TibiaHandle: HWND;
 ClassName: array [0..255] of Char;
@@ -347,35 +381,106 @@ begin
 
 end;
 
-procedure TForm1.cbbAutoCureChange(Sender: TObject);
+procedure TTibiaBTClient.cbbAutoCureChange(Sender: TObject);
 begin
   configurar;
 end;
 
-procedure TForm1.chkAutoCureClick(Sender: TObject);
+procedure TTibiaBTClient.chkAutoCureClick(Sender: TObject);
 begin
   configurar;
 end;
 
-procedure TForm1.Close1Click(Sender: TObject);
+procedure TTibiaBTClient.Close1Click(Sender: TObject);
 begin
   Close;
 end;
 
-procedure TForm1.configurar;
+procedure TTibiaBTClient.configurar;
 begin
   aThreadExec.FPlayerConfig.AutoCure           := chkAutoCure.Checked;
   aThreadExec.FPlayerConfig.AutoAntiParalize   := chkAutoParalize.Checked;
   aThreadExec.FPlayerConfig.AutoManaShield     := chkAutoManashield.Checked;
   aThreadExec.FPlayerConfig.AutoHaste          := chkAutoHaste.Checked;
+  aThreadExec.FPlayerConfig.AutoSoulFull       := chkFullSoul.Checked;
+
   aThreadExec.FPlayerConfig.HotkeyCure         := StrTohotkey(cbbautohaste.text);
   aThreadExec.FPlayerConfig.HotkeyAntiParalize := StrTohotkey(cbbAntiParalize.text);
   aThreadExec.FPlayerConfig.HotkeyManashield   := StrTohotkey(cbbAutoManashield.text);
   aThreadExec.FPlayerConfig.HotkeyHaste        := StrTohotkey(cbbautohaste.text);
+  aThreadExec.FPlayerConfig.HotkeySoulfull     := StrTohotkey(cbbFullSoul.text);
+end;
+
+procedure TTibiaBTClient.esconde_tudo;
+var
+  aHandle: HWND;
+  ClassName: array [0..255] of Char;
+begin
+  aHandle := FindWindow(nil, nil);
+  while aHandle <> 0 do
+  begin
+    GetClassName(aHandle, ClassName, SizeOf(ClassName));
+    if ClassName = 'TibiaClient' then
+    begin
+       ShowWindow(aHandle,SW_HIDE);
+    end;
+    aHandle := GetWindow(aHandle, GW_HWNDNEXT);
+  end;
+  CloseHandle(aHandle);
+
+
+  aHandle := FindWindow(nil, nil);
+  while aHandle <> 0 do
+  begin
+    GetClassName(aHandle, ClassName, SizeOf(ClassName));
+    if ClassName = 'TApplication' then
+    begin
+      ShowWindow(aHandle,SW_HIDE);
+    end;
+    aHandle := GetWindow(aHandle, GW_HWNDNEXT);
+  end;
+  CloseHandle(aHandle);
 
 end;
 
-procedure TForm1.FormActivate(Sender: TObject);
+procedure TTibiaBTClient.fecha_tudo;
+var
+  aHandle: HWND;
+  PId, h : DWORD;
+  ClassName: array [0..255] of Char;
+begin
+  aHandle := FindWindow(nil, nil);
+  while aHandle <> 0 do
+  begin
+    GetClassName(aHandle, ClassName, SizeOf(ClassName));
+    if ClassName = 'TibiaClient' then
+    begin
+      GetWindowThreadProcessId(aHandle,@PId);
+      h := OpenProcess(PROCESS_TERMINATE, false, PId);
+      TerminateProcess(h,0)
+    end;
+    aHandle := GetWindow(aHandle, GW_HWNDNEXT);
+  end;
+  CloseHandle(aHandle);
+
+
+  aHandle := FindWindow(nil, nil);
+  while aHandle <> 0 do
+  begin
+    GetClassName(aHandle, ClassName, SizeOf(ClassName));
+    if ClassName = 'TApplication' then
+    begin
+      GetWindowThreadProcessId(aHandle,@PId);
+      h := OpenProcess(PROCESS_TERMINATE, false, PId);
+      TerminateProcess(h,0)
+    end;
+    aHandle := GetWindow(aHandle, GW_HWNDNEXT);
+  end;
+  CloseHandle(aHandle);
+
+end;
+
+procedure TTibiaBTClient.FormActivate(Sender: TObject);
 begin
    if not TelaCarregada then
    Begin
@@ -385,21 +490,45 @@ begin
    End;
 end;
 
-procedure TForm1.FormCreate(Sender: TObject);
+procedure TTibiaBTClient.FormCreate(Sender: TObject);
+const
+  MOD_ALT = 1;
+  MOD_CONTROL = 2;
+  MOD_SHIFT = 4;
+  MOD_WIN = 8;
+  VK_A = $41;
+  VK_R = $52;
+  VK_F4 = $73;
 begin
   aSistema.PATH := IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0)));
   aReader       := TReaderMem.Create;
   TelaCarregada := False;
   Nome1.Caption := Caption;
+
+  // Register Hotkey Win + f12
+  hk1 := GlobalAddAtom('Hotkey1');
+  RegisterHotKey(Handle, hk1, MOD_WIN, vk_f12);
+
+  // Register Hotkey Win + f11
+  hk2 := GlobalAddAtom('Hotkey2');
+  RegisterHotKey(Handle, hk2, MOD_WIN, vk_f11);
+
+  aValueEdit := nil;
+
 end;
 
-procedure TForm1.FormDestroy(Sender: TObject);
+procedure TTibiaBTClient.FormDestroy(Sender: TObject);
 begin
   aReader.free;
+  aHandlerList.Free;
+
+  UnRegisterHotKey(Handle, hk1);
+  GlobalDeleteAtom(hk1);
+  UnRegisterHotKey(Handle, hk2);
+  GlobalDeleteAtom(hk2);
 end;
 
-procedure TForm1.gravaini(_chave, _campoini, _valor, aArq: String);
-
+procedure TTibiaBTClient.gravaini(_chave, _campoini, _valor, aArq: String);
 var
   _INI: TIniFile;
 Begin
@@ -417,7 +546,7 @@ Begin
   end;
 end;
 
-procedure TForm1.Hide1Click(Sender: TObject);
+procedure TTibiaBTClient.Hide1Click(Sender: TObject);
 begin
   if Hide1.Caption = '&Hide Client' then
   begin
@@ -431,7 +560,25 @@ begin
   end;
 end;
 
-function TForm1.LeIni(_chave, _campoini, aDefault , aArq: String): String;
+function TTibiaBTClient.hotkeyToIndex(Value: integer): integer;
+begin
+  case Value of
+     VK_F1  : result := 0;
+     VK_F2  : result := 1;
+     VK_F3  : result := 2;
+     VK_F4  : result := 3;
+     VK_F5  : result := 4;
+     VK_F6  : result := 5;
+     VK_F7  : result := 6;
+     VK_F8  : result := 7;
+     VK_F9  : result := 8;
+     VK_F10 : result := 9;
+     VK_F11 : result := 10;
+     VK_F12 : result := 11;
+  end;
+end;
+
+function TTibiaBTClient.LeIni(_chave, _campoini, aDefault , aArq: String): String;
 var  _INI: TIniFile;
 Begin
   _INI := nil;
@@ -448,7 +595,7 @@ Begin
 
 end;
 
-procedure TForm1.ListaAcoes;
+procedure TTibiaBTClient.ListaAcoes;
 var
   Value: TAcoes;
   aStr : String;
@@ -474,12 +621,37 @@ begin
   End;
 end;
 
-procedure TForm1.Open1Click(Sender: TObject);
+procedure TTibiaBTClient.listAcoesDblClick(Sender: TObject);
+begin
+  aValueEdit                  := aThreadExec.ACOES.Items[listAcoes.ItemIndex];
+
+  if Assigned(aValueEdit) then
+  Begin
+    edtNome.Text               := aValueEdit.Nome;
+    cbbhotkey.ItemIndex        := hotkeyToIndex(aValueEdit.Hotkey);
+    chkShift.Checked           := aValueEdit.Shift;
+    chkCtrl.Checked            := aValueEdit.Ctrl;
+    cbbVerificaPOR.ItemIndex   := Integer(aValueEdit.VerificaPOR);
+    cbbVerificaTIPO.ItemIndex  := Integer(aValueEdit.VerificaTIPO);
+    cbbVerificaSinal.ItemIndex := Integer(aValueEdit.VerificaSinal);
+    edtTempo.Text              := inttostr(aValueEdit.Verificador);
+    edtExausted.Text           := inttostr(aValueEdit.Exausted);
+    edtNome.Enabled            := False;
+    FocusControl(chkShift);
+  End
+  else
+  Begin
+     Showmessage('Nao foi possivel carregar.');
+     edtNome.Enabled            := True;
+  End;
+end;
+
+procedure TTibiaBTClient.Open1Click(Sender: TObject);
 begin
   Restaurar_Aplicacao;
 end;
 
-procedure TForm1.Restaurar_Aplicacao;
+procedure TTibiaBTClient.Restaurar_Aplicacao;
 var
   hApp: Integer;
 begin
@@ -503,7 +675,7 @@ begin
   end;
 end;
 
-procedure TForm1.salvar_bot(aArq:String);
+procedure TTibiaBTClient.salvar_bot(aArq:String);
 var Value:TAcoes;
      i:integer;
 begin
@@ -520,6 +692,8 @@ begin
   gravaini('CONFIG','HTPARALIZE'  ,cbbAntiParalize.ItemIndex.ToString,aArq);
   gravaini('CONFIG','MANASHIELD'  ,IfThen(chkAutoManashield.Checked,'1','0'),aArq);
   gravaini('CONFIG','HTMANASHIELD',cbbAutoManashield.ItemIndex.ToString,aArq);
+  gravaini('CONFIG','SOULFULL'    ,IfThen(chkFullSoul.Checked,'1','0'),aArq);
+  gravaini('CONFIG','HTSOULFULL'  ,cbbFullSoul.ItemIndex.ToString,aArq);
 
   i := 0;
   gravaini('ACAO','TOTAL'       , aThreadExec.ACOES.Count.ToString,aArq);
@@ -538,7 +712,7 @@ begin
   End;
 end;
 
-procedure TForm1.SetNameTibia(hWindow: HWND; aNome: String);
+procedure TTibiaBTClient.SetNameTibia(hWindow: HWND; aNome: String);
 begin
   setWindowText(hWindow,PChar(aNome));
   Caption       := 'TibiaBT - '+aNome;
@@ -546,7 +720,7 @@ begin
   TrayIcon.Hint := Caption;
 end;
 
-function TForm1.SoNumero(aValue: String): String;
+function TTibiaBTClient.SoNumero(aValue: String): String;
 var
   I: Integer;
 begin
@@ -555,7 +729,7 @@ begin
       Result := Result + aValue[I];
 end;
 
-function TForm1.StrTohotkey(Value: String): integer;
+function TTibiaBTClient.StrTohotkey(Value: String): integer;
 Begin
   if value ='F1' then
   result := VK_F1
@@ -583,7 +757,7 @@ Begin
   result := VK_F12;
 End;
 
-procedure TForm1.Timer1Timer(Sender: TObject);
+procedure TTibiaBTClient.Timer1Timer(Sender: TObject);
   procedure pintaPanelStatus(Sender:TObject;aValue:Boolean);
   Begin
      if aValue then
@@ -610,9 +784,18 @@ begin
 
 end;
 
-procedure TForm1.TrayIconDblClick(Sender: TObject);
+procedure TTibiaBTClient.TrayIconDblClick(Sender: TObject);
 begin
   Restaurar_Aplicacao;
+end;
+
+procedure TTibiaBTClient.WMHotKey(var Msg: TWMHotKey);
+begin
+  if Msg.HotKey = hk1 then
+    fecha_tudo
+  else if Msg.HotKey = hk2 then
+    esconde_tudo;
+
 end;
 
 end.

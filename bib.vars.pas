@@ -78,7 +78,7 @@ type TPlayerStatus = record
 end;
 
 
-type TAcoes = record
+type TAcoes = class
      Nome : String;
      Hotkey : Integer;
      Shift : Boolean;
@@ -100,6 +100,8 @@ type TPlayerConfig = record
      HotkeyAntiParalize : Integer;
      AutoHaste : Boolean;
      HotkeyHaste : Integer;
+     AutoSoulFull : Boolean;
+     HotkeySoulfull : Integer;
 end;
 
 type

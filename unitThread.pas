@@ -39,7 +39,7 @@ var aThread : TTibiaAddress;
 implementation
 
 uses
-  System.SysUtils, unitPrincipal, Winapi.Messages;
+  System.SysUtils, Winapi.Messages;
 
 { TTibiaAddress }
 

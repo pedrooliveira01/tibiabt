@@ -11,7 +11,7 @@ type
     FPlayerConfig : TPlayerConfig;
     FHandler : HWND;
   private
-    FACOES: TList<TACOES>;
+    FACOES: TObjectList<TACOES>;
     FTerminar: Boolean;
     FPausar : Boolean;
 { Private declarations }
@@ -22,10 +22,10 @@ type
     constructor Create(aHandle:DWORD);
     Destructor Destroy;override;
     Procedure SendMensagem(Value:Integer; aShift:Boolean=false;aCtrl:Boolean=false);overload;
-    procedure AddAcao(aNome:String;aHotkey:Integer;aShift,aCtrl:Boolean;aVerificaPor:TVerificaPor;aVerificaTipo:TVerificaTipo;aVarificaSinal:TVerificaSinal;aVerificador,aExausted:Integer);
+    procedure AddAcao(aNome:String;aHotkey:Integer;aShift,aCtrl:Boolean;aVerificaPor:TVerificaPor;aVerificaTipo:TVerificaTipo;aVarificaSinal:TVerificaSinal;aVerificador,aExausted:Integer;aEdit:Integer=-1);
     procedure AddAcao2(Value:TAcoes);
     procedure DeleteAcao(aIndex:Integer);
-    property ACOES: TList<TACOES> read FACOES write FACOES;
+    property ACOES: TObjectList<TACOES> read FACOES write FACOES;
     property Terminar: Boolean read FTerminar write FTerminar;
     property Pausar: Boolean read FPausar write FPausar;
     property PlayerConfig: TPlayerConfig read FPlayerConfig write FPlayerConfig;
@@ -37,23 +37,35 @@ var aThreadExec : TTibiaExec;
 implementation
 
 uses
-  System.SysUtils, unitThread, unitPrincipal, Winapi.Messages;
+  System.SysUtils, unitThread, Winapi.Messages;
 
 procedure TTibiaExec.AddAcao(aNome: String; aHotkey: Integer; aShift,aCtrl: Boolean; aVerificaPor: TVerificaPor;
-  aVerificaTipo: TVerificaTipo;aVarificaSinal:TVerificaSinal; aVerificador,aExausted: Integer);
+  aVerificaTipo: TVerificaTipo;aVarificaSinal:TVerificaSinal; aVerificador,aExausted: Integer;aEdit:Integer);
 var Value:TAcoes;
 begin
-  Value.Nome          := aNome;
-  Value.Hotkey        := aHotkey;
-  Value.Shift         := aShift;
-  Value.Ctrl          := aCTRL;
-  Value.VerificaPOR   := aVerificaPor;
-  Value.VerificaTIPO  := aVerificaTipo;
-  Value.VerificaSinal := aVarificaSinal;
-  Value.Verificador   := aVerificador;
-  Value.TempoUlt      := now;
-  Value.Exausted      := aExausted;
-  FACOES.Add(Value);
+  if aEdit>-1 then
+     Value      := ACOES.Items[aEdit]
+  else
+  Begin
+     Value      := TAcoes.Create;
+     Value.Nome := aNome;
+  End;
+
+  if Assigned(Value) then
+  Begin
+    Value.Hotkey        := aHotkey;
+    Value.Shift         := aShift;
+    Value.Ctrl          := aCTRL;
+    Value.VerificaPOR   := aVerificaPor;
+    Value.VerificaTIPO  := aVerificaTipo;
+    Value.VerificaSinal := aVarificaSinal;
+    Value.Verificador   := aVerificador;
+    Value.TempoUlt      := now;
+    Value.Exausted      := aExausted;
+  End;
+
+  if aEdit=-1 then
+     FACOES.Add(Value);
 end;
 
 procedure TTibiaExec.AddAcao2(Value: TAcoes);
@@ -67,7 +79,7 @@ begin
 
   FPausar := True;
   FTerminar := False;
-  FACOES := TList<TACOES>.Create;
+  FACOES := TObjectList<TACOES>.Create;
   FHandler := aHandle;
 
 end;
@@ -206,6 +218,14 @@ begin
      if not aThread.PlayerStatus.Hast then
      Begin
         SendMensagem(PlayerConfig.HotkeyCure);
+        sleep(1000);
+     End;
+  End;
+  if PlayerConfig.AutoSoulFull then
+  Begin
+     if aThread.Player.SOULPOINT=250 then
+     Begin
+        SendMensagem(PlayerConfig.HotkeySoulfull);
         sleep(1000);
      End;
   End;
