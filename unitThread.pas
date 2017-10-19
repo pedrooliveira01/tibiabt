@@ -19,7 +19,7 @@ type
     { Private declarations }
   protected
     procedure Execute; override;
-    procedure AddAddress(aNome:String;aCodigo,aValor:Integer);
+    procedure AddAddress(aNome:String;aCodigo,aValor:Integer;aTipoAddress:TTipoAddress=taInteger);
     Function ReadAddress(Value:TAddress):String;
     procedure AtualizaVars;
     procedure GetPlayerStatus;
@@ -39,16 +39,17 @@ var aThread : TTibiaAddress;
 implementation
 
 uses
-  System.SysUtils, Winapi.Messages;
+  System.SysUtils, Winapi.Messages, Memory;
 
 { TTibiaAddress }
 
-procedure TTibiaAddress.AddAddress(aNome:String;aCodigo,aValor:Integer);
+procedure TTibiaAddress.AddAddress(aNome:String;aCodigo,aValor:Integer;aTipoAddress:TTipoAddress);
 var aValue:TAddress;
 begin
   aValue.Nome := aNome;
   aValue.Valor := aValor.ToString;
   aValue.Codigo := aCodigo;
+  aValue.Tipo   := aTipoAddress;
   FPlayerAddress.Add(aNome,aValue);
 end;
 
@@ -59,8 +60,15 @@ procedure TTibiaAddress.AtualizaVars;
       FPlayerAddress.TryGetValue(aNome,aValue);
       result := aValue.Valor.ToInteger;
    End;
+   function RetornaValueStr(aNome:String):String;
+   var aValue:TAddress;
+   Begin
+      FPlayerAddress.TryGetValue(aNome,aValue);
+      result := aValue.Valor;
+   End;
 begin
-  FPlayer.STATUS               :=  RetornaValue('PLAYER_STATUS');
+//    FPlayer.NAME                 :=  RetornaValueStr('PLAYER_NAME');
+    FPlayer.STATUS               :=  RetornaValue('PLAYER_STATUS');
 //  FPlayer.FIST_PERC            :=  RetornaValue('PLAYER_FIST_PERC');
 //  FPlayer.CLUB_PERC            :=  RetornaValue('PLAYER_CLUB_PERC');
 //  FPlayer.SWORD_PERC           :=  RetornaValue('PLAYER_SWORD_PERC');
@@ -89,8 +97,8 @@ begin
     FPlayer.HP                   :=  RetornaValue('PLAYER_HP');
     FPlayer.ID                   :=  RetornaValue('PLAYER_ID');
 //  FPlayer.GOTOZ                :=  RetornaValue('PLAYER_GOTOZ');
-//  FPlayer.GOTOY                :=  RetornaValue('PLAYER_GOTOY');
-//  FPlayer.GOTOX                :=  RetornaValue('PLAYER_GOTOX');
+    FPlayer.GOTOY                :=  RetornaValue('PLAYER_GOTOY');
+    FPlayer.GOTOX                :=  RetornaValue('PLAYER_GOTOX');
 //  FPlayer.HEAD_SLOT            :=  RetornaValue('PLAYER_HEAD_SLOT');
 //  FPlayer.NECK_SLOT            :=  RetornaValue('PLAYER_NECK_SLOT');
 //  FPlayer.CONTAINER_SLOT       :=  RetornaValue('PLAYER_CONTAINER_SLOT');
@@ -105,8 +113,8 @@ begin
 //  FPlayer.ARROW_SLOT           :=  RetornaValue('PLAYER_ARROW_SLOT');
 //  FPlayer.ARROW_SLOTCOUNT      :=  RetornaValue('PLAYER_ARROW_SLOTCOUNT');
 //  FPlayer.Z                    :=  RetornaValue('PLAYER_Z');
-//  FPlayer.Y                    :=  RetornaValue('PLAYER_Y');
-//  FPlayer.X                    :=  RetornaValue('PLAYER_X');
+    FPlayer.Y                    :=  RetornaValue('PLAYER_Y');
+    FPlayer.X                    :=  RetornaValue('PLAYER_X');
     FPlayer.CONNECT_STATUS       :=  RetornaValue('PLAYER_CONNECT_STATUS');
 
     GetPlayerStatus;
@@ -121,6 +129,7 @@ begin
   FHandler := aHandle;
   GetWindowThreadProcessId(FHandler,@fPId);
 
+//  AddAddress('PLAYER_NAME'                  ,$00605DF4,0, taString);
   AddAddress('PLAYER_STATUS'                ,$00605958,0); //< 1 = Poison; 2 = Fire; 4 = Energy; 8 = Drunk; 16 = Manashield; 32 = Paralysis; 64 = Haste; 128 = Battle; 256 = Underwater >
 // AddAddress('PLAYER_FIST_PERC'             ,$0060595C,0);
 // AddAddress('PLAYER_CLUB_PERC'             ,$00605960,0);
@@ -150,8 +159,8 @@ begin
   AddAddress('PLAYER_HP'                    ,$006059CC,0);
   AddAddress('PLAYER_ID'                    ,$006059D0,0);
 // AddAddress('PLAYER_GOTOZ'                 ,$00605A0C,0);//  < To start walking you need to write 1 to your battlelist pos + WALKING distance >
-// AddAddress('PLAYER_GOTOY'                 ,$00605A10,0);//  < To start walking you need to write 1 to your battlelist pos + WALKING distance >
-// AddAddress('PLAYER_GOTOX'                 ,$00605A14,0);///  < To start walking you need to write 1 to your battlelist pos + WALKING distance >
+  AddAddress('PLAYER_GOTOY'                 ,$00605A10,0);//  < To start walking you need to write 1 to your battlelist pos + WALKING distance >
+  AddAddress('PLAYER_GOTOX'                 ,$00605A14,0);///  < To start walking you need to write 1 to your battlelist pos + WALKING distance >
 // AddAddress('PLAYER_HEAD_SLOT'             ,$0060E290,0);
 // AddAddress('PLAYER_NECK_SLOT'             ,$0060E2A4,0);
 // AddAddress('PLAYER_CONTAINER_SLOT'        ,$0060E2B0,0);
@@ -166,8 +175,8 @@ begin
 // AddAddress('PLAYER_ARROW_SLOT'            ,$0060E304,0);
 // AddAddress('PLAYER_ARROW_SLOTCOUNT'       ,$0060E308,0);
 // AddAddress('PLAYER_Z'                     ,$00610C20,0);
-// AddAddress('PLAYER_Y'                     ,$00610C24,0);
-// AddAddress('PLAYER_X'                     ,$00610C28,0);
+  AddAddress('PLAYER_Y'                     ,$00610C24,0);
+  AddAddress('PLAYER_X'                     ,$00610C28,0);
   AddAddress('PLAYER_CONNECT_STATUS'        ,$0075D3E0,0);// < 0 = Not connected; 4 = Connecting; 8 = Connected >
 end;
 
@@ -190,7 +199,11 @@ begin
       if FPausar or FTerminar then
          break;
       aNewValue       := Value;
-      aNewValue.Valor := ReadAddress(Value);
+      case Value.Tipo of
+         taInteger: aNewValue.Valor := ReadAddress(Value);
+         taString:  aNewValue.Valor := aMemory.ReadString(FHandler,Value.Codigo);
+      end;
+
       FPlayerAddress.AddOrSetValue(aNewValue.Nome,aNewValue);
       sleep(20);
     End;

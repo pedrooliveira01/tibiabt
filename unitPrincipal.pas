@@ -84,6 +84,8 @@ type
     chkCtrl: TCheckBox;
     chkFullSoul: TCheckBox;
     cbbFullSoul: TComboBox;
+    chk_auto_walk1: TCheckBox;
+    chk_auto_walk2: TCheckBox;
     procedure btnStartClick(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -142,7 +144,7 @@ implementation
 
 { TTibiaBT }
 
-uses System.IOUtils, System.StrUtils, Winapi.TlHelp32;
+uses System.IOUtils, System.StrUtils, Winapi.TlHelp32, Memory;
 
 procedure TTibiaBTClient.Apagar1Click(Sender: TObject);
 var aIndex:Integer;
@@ -297,6 +299,9 @@ begin
   chkFullSoul.Checked := LeIni('CONFIG','SOULFULL','0',aArq)='1';
   cbbFullSoul.ItemIndex := StrToInt(LeIni('CONFIG','HTSOULFULL','0',aArq));
 
+  chk_auto_walk1.Checked := LeIni('CONFIG','AUTOWALK1','0',aArq)='1';
+  chk_auto_walk2.Checked := LeIni('CONFIG','AUTOWALK2','0',aArq)='1';
+
 
   aTotal :=  StrToInt(LeIni('ACAO','TOTAL' ,'0',aArq));
   i := 0;
@@ -409,6 +414,19 @@ begin
   aThreadExec.FPlayerConfig.HotkeyManashield   := StrTohotkey(cbbAutoManashield.text);
   aThreadExec.FPlayerConfig.HotkeyHaste        := StrTohotkey(cbbautohaste.text);
   aThreadExec.FPlayerConfig.HotkeySoulfull     := StrTohotkey(cbbFullSoul.text);
+
+  aThreadExec.FPlayerConfig.AutoWalk1.Ativo    := chk_auto_walk1.Checked;
+  aThreadExec.FPlayerConfig.AutoWalk1.Direcao  := dUpDown;
+  aThreadExec.FPlayerConfig.AutoWalk2.Ultimo   := dUp;
+  aThreadExec.FPlayerConfig.AutoWalk1.Pause    := 1000;
+  aThreadExec.FPlayerConfig.AutoWalk1.TempoUlt := Now;
+
+  aThreadExec.FPlayerConfig.AutoWalk2.Ativo    := chk_auto_Walk2.Checked;
+  aThreadExec.FPlayerConfig.AutoWalk2.Direcao  := dLeftRight;
+  aThreadExec.FPlayerConfig.AutoWalk2.Ultimo   := dLeft;
+  aThreadExec.FPlayerConfig.AutoWalk2.Pause    := 1000;
+  aThreadExec.FPlayerConfig.AutoWalk2.TempoUlt := Now;
+
 end;
 
 procedure TTibiaBTClient.esconde_tudo;
@@ -504,6 +522,8 @@ begin
   aReader       := TReaderMem.Create;
   TelaCarregada := False;
   Nome1.Caption := Caption;
+
+  aMemory := TMemory.Create;
 
   // Register Hotkey Win + f12
   hk1 := GlobalAddAtom('Hotkey1');
@@ -605,9 +625,10 @@ begin
   for Value in aThreadExec.ACOES do
   Begin
      case Value.VerificaPOR of
-       vpMana: aPor:= 'Mana';
-       vpHP:  aPor:= 'HP';
-       vpTempo:  aPor:= 'Tempo';
+       vpMana : aPor:= 'Mana';
+       vpHP   : aPor:= 'HP';
+       vpTempo: aPor:= 'Tempo';
+       vpSoul : aPor:= 'Soul';
      end;
      aStr := '[Nome:'+Value.Nome
             +'][POR:'+aPor
@@ -694,6 +715,9 @@ begin
   gravaini('CONFIG','HTMANASHIELD',cbbAutoManashield.ItemIndex.ToString,aArq);
   gravaini('CONFIG','SOULFULL'    ,IfThen(chkFullSoul.Checked,'1','0'),aArq);
   gravaini('CONFIG','HTSOULFULL'  ,cbbFullSoul.ItemIndex.ToString,aArq);
+
+  gravaini('CONFIG','AUTOWALK1'   ,IfThen(chk_auto_walk1.Checked,'1','0'),aArq);
+  gravaini('CONFIG','AUTOWALK2'   ,IfThen(chk_auto_walk2.Checked,'1','0'),aArq);
 
   i := 0;
   gravaini('ACAO','TOTAL'       , aThreadExec.ACOES.Count.ToString,aArq);

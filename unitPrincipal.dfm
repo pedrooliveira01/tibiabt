@@ -7430,9 +7430,6 @@ object TibiaBTClient: TTibiaBTClient
         Text = '1.0.0.4'
         Width = 50
       end>
-    ExplicitLeft = 8
-    ExplicitTop = 525
-    ExplicitWidth = 821
   end
   object pFundo: TPanel
     Left = 0
@@ -7442,8 +7439,6 @@ object TibiaBTClient: TTibiaBTClient
     Align = alBottom
     Enabled = False
     TabOrder = 1
-    ExplicitTop = 168
-    ExplicitWidth = 821
     object gbPersonagens: TGroupBox
       Left = 1
       Top = 1
@@ -7452,8 +7447,6 @@ object TibiaBTClient: TTibiaBTClient
       Align = alTop
       Caption = 'Personagem'
       TabOrder = 0
-      ExplicitLeft = -1
-      ExplicitTop = -8
       object Panel1: TPanel
         Left = 557
         Top = 16
@@ -7461,10 +7454,6 @@ object TibiaBTClient: TTibiaBTClient
         Height = 60
         Align = alClient
         TabOrder = 0
-        ExplicitLeft = 320
-        ExplicitTop = 56
-        ExplicitWidth = 185
-        ExplicitHeight = 41
         object pHealth: TPanel
           Left = 1
           Top = 1
@@ -7483,9 +7472,6 @@ object TibiaBTClient: TTibiaBTClient
           ParentBackground = False
           ParentFont = False
           TabOrder = 0
-          ExplicitLeft = 2
-          ExplicitTop = 16
-          ExplicitWidth = 815
         end
         object pLevel: TPanel
           Left = 1
@@ -7505,9 +7491,6 @@ object TibiaBTClient: TTibiaBTClient
           ParentBackground = False
           ParentFont = False
           TabOrder = 1
-          ExplicitLeft = 2
-          ExplicitTop = 35
-          ExplicitWidth = 815
         end
         object pMana: TPanel
           Left = 1
@@ -7527,9 +7510,6 @@ object TibiaBTClient: TTibiaBTClient
           ParentBackground = False
           ParentFont = False
           TabOrder = 2
-          ExplicitLeft = 2
-          ExplicitTop = 16
-          ExplicitWidth = 815
         end
       end
       object Panel4: TPanel
@@ -7539,9 +7519,6 @@ object TibiaBTClient: TTibiaBTClient
         Height = 60
         Align = alLeft
         TabOrder = 1
-        ExplicitLeft = 517
-        ExplicitTop = 32
-        ExplicitHeight = 41
         object pDrunk: TPanel
           Left = 1
           Top = 1
@@ -7560,8 +7537,6 @@ object TibiaBTClient: TTibiaBTClient
           ParentBackground = False
           ParentFont = False
           TabOrder = 0
-          ExplicitLeft = 2
-          ExplicitTop = 9
         end
         object pParalize: TPanel
           Left = 1
@@ -7581,8 +7556,6 @@ object TibiaBTClient: TTibiaBTClient
           ParentBackground = False
           ParentFont = False
           TabOrder = 1
-          ExplicitLeft = 2
-          ExplicitTop = 22
         end
         object pUnderwater: TPanel
           Left = 1
@@ -7602,7 +7575,6 @@ object TibiaBTClient: TTibiaBTClient
           ParentBackground = False
           ParentFont = False
           TabOrder = 2
-          ExplicitTop = 22
         end
       end
       object Panel5: TPanel
@@ -7612,9 +7584,6 @@ object TibiaBTClient: TTibiaBTClient
         Height = 60
         Align = alLeft
         TabOrder = 2
-        ExplicitLeft = 172
-        ExplicitTop = 82
-        ExplicitHeight = 41
         object pPoison: TPanel
           Left = 1
           Top = 1
@@ -7633,8 +7602,6 @@ object TibiaBTClient: TTibiaBTClient
           ParentBackground = False
           ParentFont = False
           TabOrder = 0
-          ExplicitLeft = 2
-          ExplicitTop = 9
         end
         object pFire: TPanel
           Left = 1
@@ -7654,8 +7621,6 @@ object TibiaBTClient: TTibiaBTClient
           ParentBackground = False
           ParentFont = False
           TabOrder = 1
-          ExplicitLeft = 2
-          ExplicitTop = 22
         end
         object pEnergy: TPanel
           Left = 1
@@ -7675,7 +7640,6 @@ object TibiaBTClient: TTibiaBTClient
           ParentBackground = False
           ParentFont = False
           TabOrder = 2
-          ExplicitTop = 22
         end
       end
       object Panel6: TPanel
@@ -7685,9 +7649,6 @@ object TibiaBTClient: TTibiaBTClient
         Height = 60
         Align = alLeft
         TabOrder = 3
-        ExplicitLeft = 416
-        ExplicitTop = 96
-        ExplicitHeight = 41
         object pBattle: TPanel
           Left = 1
           Top = 1
@@ -7706,8 +7667,6 @@ object TibiaBTClient: TTibiaBTClient
           ParentBackground = False
           ParentFont = False
           TabOrder = 0
-          ExplicitLeft = 2
-          ExplicitTop = 9
         end
         object pHast: TPanel
           Left = 1
@@ -7727,8 +7686,6 @@ object TibiaBTClient: TTibiaBTClient
           ParentBackground = False
           ParentFont = False
           TabOrder = 1
-          ExplicitLeft = 2
-          ExplicitTop = 22
         end
         object pManaShield: TPanel
           Left = 1
@@ -7748,8 +7705,6 @@ object TibiaBTClient: TTibiaBTClient
           ParentBackground = False
           ParentFont = False
           TabOrder = 2
-          ExplicitLeft = 2
-          ExplicitTop = 22
         end
       end
     end
@@ -7761,10 +7716,6 @@ object TibiaBTClient: TTibiaBTClient
       Align = alClient
       Caption = 'Acoes'
       TabOrder = 1
-      ExplicitLeft = 145
-      ExplicitTop = 1
-      ExplicitWidth = 465
-      ExplicitHeight = 367
       object listAcoes: TListBox
         Left = 2
         Top = 57
@@ -7775,8 +7726,6 @@ object TibiaBTClient: TTibiaBTClient
         PopupMenu = PopupMenu1
         TabOrder = 0
         OnDblClick = listAcoesDblClick
-        ExplicitLeft = 0
-        ExplicitTop = 56
       end
       object Panel2: TPanel
         Left = 2
@@ -7785,7 +7734,6 @@ object TibiaBTClient: TTibiaBTClient
         Height = 41
         Align = alTop
         TabOrder = 1
-        ExplicitWidth = 461
         object Button2: TButton
           Left = 197
           Top = 10
@@ -7820,7 +7768,6 @@ object TibiaBTClient: TTibiaBTClient
           Caption = 'Start'
           TabOrder = 3
           OnClick = btnStartClick
-          ExplicitLeft = 603
         end
       end
       object gbAddAcoes: TGroupBox
@@ -7837,8 +7784,6 @@ object TibiaBTClient: TTibiaBTClient
         Font.Style = [fsBold]
         ParentFont = False
         TabOrder = 2
-        ExplicitTop = 301
-        ExplicitWidth = 698
         object Label1: TLabel
           Left = 7
           Top = 26
@@ -7948,7 +7893,8 @@ object TibiaBTClient: TTibiaBTClient
           Items.Strings = (
             'MANA'
             'HP'
-            'TEMPO')
+            'TEMPO'
+            'SOUL')
         end
         object cbbVerificaTIPO: TComboBox
           Left = 291
@@ -7972,7 +7918,6 @@ object TibiaBTClient: TTibiaBTClient
           Caption = 'Adicionar'
           TabOrder = 9
           OnClick = Button1Click
-          ExplicitTop = 14
         end
         object cbbVerificaSinal: TComboBox
           Left = 376
@@ -8014,7 +7959,6 @@ object TibiaBTClient: TTibiaBTClient
       Align = alRight
       Caption = 'Configuracoes'
       TabOrder = 2
-      ExplicitTop = 1
       object chkAutoCure: TCheckBox
         Left = 2
         Top = 16
@@ -8024,9 +7968,6 @@ object TibiaBTClient: TTibiaBTClient
         Caption = 'Auto cure'
         TabOrder = 0
         OnClick = chkAutoCureClick
-        ExplicitLeft = 3
-        ExplicitTop = 5
-        ExplicitWidth = 113
       end
       object chkAutoParalize: TCheckBox
         Left = 2
@@ -8037,9 +7978,6 @@ object TibiaBTClient: TTibiaBTClient
         Caption = 'Anti Paralize'
         TabOrder = 1
         OnClick = chkAutoCureClick
-        ExplicitLeft = 1
-        ExplicitTop = 100
-        ExplicitWidth = 113
       end
       object chkAutoHaste: TCheckBox
         Left = 2
@@ -8050,9 +7988,6 @@ object TibiaBTClient: TTibiaBTClient
         Caption = 'Auto haste'
         TabOrder = 2
         OnClick = chkAutoCureClick
-        ExplicitLeft = 4
-        ExplicitTop = 57
-        ExplicitWidth = 113
       end
       object cbbautohaste: TComboBox
         Left = 2
@@ -8078,8 +8013,6 @@ object TibiaBTClient: TTibiaBTClient
           'F10'
           'F11'
           'F12')
-        ExplicitTop = 57
-        ExplicitWidth = 22
       end
       object chkAutoManashield: TCheckBox
         Left = 2
@@ -8090,9 +8023,6 @@ object TibiaBTClient: TTibiaBTClient
         Caption = 'Auto manashield'
         TabOrder = 4
         OnClick = chkAutoCureClick
-        ExplicitLeft = 6
-        ExplicitTop = 143
-        ExplicitWidth = 113
       end
       object cbbAutoCure: TComboBox
         Left = 2
@@ -8118,8 +8048,6 @@ object TibiaBTClient: TTibiaBTClient
           'F10'
           'F11'
           'F12')
-        ExplicitTop = 16
-        ExplicitWidth = 22
       end
       object cbbAntiParalize: TComboBox
         Left = 2
@@ -8145,8 +8073,6 @@ object TibiaBTClient: TTibiaBTClient
           'F10'
           'F11'
           'F12')
-        ExplicitTop = 105
-        ExplicitWidth = 22
       end
       object cbbAutoManashield: TComboBox
         Left = 2
@@ -8172,9 +8098,6 @@ object TibiaBTClient: TTibiaBTClient
           'F10'
           'F11'
           'F12')
-        ExplicitLeft = 1
-        ExplicitTop = 133
-        ExplicitWidth = 113
       end
       object chkFullSoul: TCheckBox
         Left = 2
@@ -8185,8 +8108,6 @@ object TibiaBTClient: TTibiaBTClient
         Caption = 'Full soul (250)'
         TabOrder = 8
         OnClick = chkAutoCureClick
-        ExplicitLeft = 4
-        ExplicitTop = 233
       end
       object cbbFullSoul: TComboBox
         Left = 2
@@ -8212,8 +8133,26 @@ object TibiaBTClient: TTibiaBTClient
           'F10'
           'F11'
           'F12')
-        ExplicitLeft = 6
-        ExplicitTop = 237
+      end
+      object chk_auto_walk1: TCheckBox
+        Left = 2
+        Top = 231
+        Width = 120
+        Height = 21
+        Align = alTop
+        Caption = 'Auto Walk 1'
+        TabOrder = 10
+        OnClick = chkAutoCureClick
+      end
+      object chk_auto_walk2: TCheckBox
+        Left = 2
+        Top = 252
+        Width = 120
+        Height = 21
+        Align = alTop
+        Caption = 'Auto Walk 2'
+        TabOrder = 11
+        OnClick = chkAutoCureClick
       end
     end
   end
@@ -8226,8 +8165,6 @@ object TibiaBTClient: TTibiaBTClient
     Color = clRed
     ParentBackground = False
     TabOrder = 2
-    ExplicitWidth = 764
-    ExplicitHeight = 41
     object Label8: TLabel
       Left = 114
       Top = 20
@@ -8294,7 +8231,7 @@ object TibiaBTClient: TTibiaBTClient
     Left = 984
     Top = 464
     Bitmap = {
-      494C010101000800300010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101010008003C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       00000000000000000000000000000000000000000000000000050D0C0BE14240
       3EF34D4D4CF34F4F4FF34C4C4BF33D3B38F30101019E00000000000000000000

@@ -2,18 +2,22 @@ unit bib.vars;
 
 interface
 
-type TVerificaPor = (vpMana,vpHP,vpTempo);
+type TTipoAddress = (taInteger,taString);
+type TVerificaPor = (vpMana,vpHP,vpTempo,vpSoul);
 type TVerificaTipo = (vtPerc,vtValor);
 type TVerificaSinal = (vsMenor,vsMaior);
+type TDirecao = (dUp,dDown,dLeft,dRight,dUpDown,dLeftRight);
 
 
 Type TAddress = record
+     Tipo   : TTipoAddress;
      Valor  : String;
      Codigo : Integer;
      Nome   : String;
 end;
 
 Type TPlayer = record
+     NAME                : String;
      STATUS              :Integer;
      FIST_PERC           :Integer;
      CLUB_PERC           :Integer;
@@ -91,6 +95,14 @@ type TAcoes = class
      Exausted : Integer;
 end;
 
+type TPlayerAutoWalk = record
+     Ativo   : Boolean;
+     Direcao : TDirecao;
+     Pause   : Integer;
+     Ultimo  : TDirecao;
+     TempoUlt : TDatetime;
+end;
+
 type TPlayerConfig = record
      AutoCure : Boolean;
      HotkeyCure : Integer;
@@ -102,7 +114,11 @@ type TPlayerConfig = record
      HotkeyHaste : Integer;
      AutoSoulFull : Boolean;
      HotkeySoulfull : Integer;
+     AutoWalk1 : TPlayerAutoWalk;
+     AutoWalk2 : TPlayerAutoWalk;
 end;
+
+
 
 type
 TBLPosition = record

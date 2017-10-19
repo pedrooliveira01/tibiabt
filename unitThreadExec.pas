@@ -21,7 +21,7 @@ type
   public
     constructor Create(aHandle:DWORD);
     Destructor Destroy;override;
-    Procedure SendMensagem(Value:Integer; aShift:Boolean=false;aCtrl:Boolean=false);overload;
+    Procedure SendHotKey(Value:Integer; aShift:Boolean=false;aCtrl:Boolean=false);overload;
     procedure AddAcao(aNome:String;aHotkey:Integer;aShift,aCtrl:Boolean;aVerificaPor:TVerificaPor;aVerificaTipo:TVerificaTipo;aVarificaSinal:TVerificaSinal;aVerificador,aExausted:Integer;aEdit:Integer=-1);
     procedure AddAcao2(Value:TAcoes);
     procedure DeleteAcao(aIndex:Integer);
@@ -37,7 +37,7 @@ var aThreadExec : TTibiaExec;
 implementation
 
 uses
-  System.SysUtils, unitThread, Winapi.Messages;
+  System.SysUtils, unitThread, Winapi.Messages, Inputer;
 
 procedure TTibiaExec.AddAcao(aNome: String; aHotkey: Integer; aShift,aCtrl: Boolean; aVerificaPor: TVerificaPor;
   aVerificaTipo: TVerificaTipo;aVarificaSinal:TVerificaSinal; aVerificador,aExausted: Integer;aEdit:Integer);
@@ -133,7 +133,15 @@ begin
                             vsMaior: aExecuta := ((aThread.Player.HP * 100) / aThread.Player.HP_MAX)>=Value.Verificador;
                             vsMenor: aExecuta := ((aThread.Player.HP * 100) / aThread.Player.HP_MAX)<=Value.Verificador;
                         end;
-                vpTempo: aExecuta := secondsbetween(now,Value.TempoUlt)>=Value.Verificador;
+                vpTempo:Begin
+                           aExecuta := secondsbetween(now,Value.TempoUlt)>=Value.Verificador;
+                           if aExecuta then
+                              Value.TempoUlt := now;
+                        End;
+                vpSoul: case Value.VerificaSinal of
+                            vsMaior: aExecuta := ((aThread.Player.SOULPOINT * 100) / 250)>=Value.Verificador;
+                            vsMenor: aExecuta := ((aThread.Player.SOULPOINT * 100) / 250)<=Value.Verificador;
+                        end;
               end;
             End;
             vtValor:
@@ -147,14 +155,30 @@ begin
                             vsMaior: aExecuta := aThread.Player.HP >=Value.Verificador;
                             vsMenor: aExecuta := aThread.Player.HP <=Value.Verificador;
                         end;
-                vpTempo: aExecuta := secondsbetween(now,Value.TempoUlt)>=Value.Verificador;
+                vpTempo:Begin
+                           aExecuta := secondsbetween(now,Value.TempoUlt)>=Value.Verificador;
+                           if aExecuta then
+                              Value.TempoUlt := now;
+                        End;
+                vpSoul: case Value.VerificaSinal of
+                            vsMaior: aExecuta := aThread.Player.SOULPOINT >= Value.Verificador;
+                            vsMenor: aExecuta := aThread.Player.SOULPOINT <= Value.Verificador;
+                        end;
               end;
             End;
           end;
 
           if aExecuta then
           Begin
-             SendMensagem(Integer(Value.Hotkey),Value.Shift,Value.Ctrl);
+             if Value.Nome[1] = '#' then
+             Begin
+                SendString(FHandler,copy(Value.Nome,2,length(Value.Nome)));
+                SendKeyDown(FHandler,VK_RETURN);
+                SendKeyUp(FHandler,VK_RETURN);
+             end
+             else
+                SendHotKey(Integer(Value.Hotkey),Value.Shift,Value.Ctrl);
+
              sleep(Value.Exausted);
           End
           else sleep(50);
@@ -165,35 +189,36 @@ begin
 
 end;
 
-procedure TTibiaExec.SendMensagem(Value: Integer; aShift,aCtrl:Boolean);
+procedure TTibiaExec.SendHotKey(Value: Integer; aShift,aCtrl:Boolean);
 begin
   try
     if aShift then
-       SendMessage(FHandler, WM_KEYDOWN, VK_SHIFT, 0);
+       SendKeyDown(FHandler,VK_SHIFT);
 
     if aCtrl then
-       SendMessage(FHandler, WM_KEYDOWN, VK_CONTROL, 0);
+       SendKeyDown(FHandler,VK_CONTROL);
 
-    SendMessage(FHandler, WM_KEYDOWN, Value, 0);
+    SendKeyDown(FHandler, Value);
 
     if aShift then
-       SendMessage(FHandler, WM_KEYUP, VK_SHIFT, 0);
+       SendKeyUp(FHandler,VK_SHIFT);
 
     if aCtrl then
-       SendMessage(FHandler, WM_KEYUP, VK_CONTROL, 0);
+       SendKeyUp(FHandler,VK_CONTROL);
 
-    SendMessage(FHandler, WM_KEYUP, Value, 0);
+    SendKeyUp(FHandler, Value);
   finally
   end;
 end;
 
 procedure TTibiaExec.ExecutarConfiguracoesPlayerStatus;
+var aExecuta:Boolean;
 begin
   if PlayerConfig.AutoCure then
   Begin
      if aThread.PlayerStatus.Poison then
      Begin
-        SendMensagem(PlayerConfig.HotkeyCure);
+        SendHotKey(PlayerConfig.HotkeyCure);
         sleep(1000);
      End;
   end;
@@ -201,7 +226,7 @@ begin
   Begin
      if not aThread.PlayerStatus.Manashield then
      Begin
-        SendMensagem(PlayerConfig.HotkeyManashield);
+        SendHotKey(PlayerConfig.HotkeyManashield);
         sleep(1000);
      End;
   end;
@@ -209,7 +234,7 @@ begin
   Begin
      if aThread.PlayerStatus.Paralyse then
      Begin
-        SendMensagem(PlayerConfig.HotkeyAntiParalize);
+        SendHotKey(PlayerConfig.HotkeyAntiParalize);
         sleep(1000);
      End;
   end;
@@ -217,7 +242,7 @@ begin
   Begin
      if not aThread.PlayerStatus.Hast then
      Begin
-        SendMensagem(PlayerConfig.HotkeyCure);
+        SendHotKey(PlayerConfig.HotkeyCure);
         sleep(1000);
      End;
   End;
@@ -225,29 +250,48 @@ begin
   Begin
      if aThread.Player.SOULPOINT=250 then
      Begin
-        SendMensagem(PlayerConfig.HotkeySoulfull);
+        SendHotKey(PlayerConfig.HotkeySoulfull);
         sleep(1000);
+     End;
+  End;
+  if PlayerConfig.AutoWalk1.Ativo then
+  Begin
+     aExecuta := MilliSecondsBetween(now,PlayerConfig.AutoWalk1.TempoUlt)>=PlayerConfig.AutoWalk1.Pause;
+     if aExecuta then
+     Begin
+        FPlayerConfig.AutoWalk1.TempoUlt := now;
+        if FPlayerConfig.AutoWalk1.Ultimo=dUp then
+        Begin
+           FPlayerConfig.AutoWalk1.Ultimo:=dDown;
+           SendHotKey(VK_DOWN);
+        end
+        else
+        Begin
+           FPlayerConfig.AutoWalk1.Ultimo:=dUp;
+           SendHotKey(VK_UP);
+        End;
+     End;
+  End;
+  if PlayerConfig.AutoWalk2.Ativo then
+  Begin
+     aExecuta := MilliSecondsBetween(now,PlayerConfig.AutoWalk2.TempoUlt)>=PlayerConfig.AutoWalk2.Pause;
+     if aExecuta then
+     Begin
+        FPlayerConfig.AutoWalk2.TempoUlt := now;
+        if FPlayerConfig.AutoWalk2.Ultimo=dLeft then
+        Begin
+           FPlayerConfig.AutoWalk2.Ultimo:=dRight;
+           SendHotKey(VK_RIGHT);
+        end
+        else
+        Begin
+           FPlayerConfig.AutoWalk2.Ultimo:=dLeft;
+           SendHotKey(VK_LEFT);
+        End;
      End;
   End;
 end;
 
-{procedure TTibiaExec.SendMensagem(Value: String);
-var
-  letra: Integer;
-  B: Byte;
-begin
-
-  try
-    for letra := 1 to Length(Value) do
-    begin
-      B := Byte(Value[letra]);
-      SendMessage(FHandler, WM_CHAR, B, 0);
-    end;
-    SendMessage(FHandler, WM_CHAR, 13, 0);
-  finally
-  end;
-
-end;  }
 
 end.
 
